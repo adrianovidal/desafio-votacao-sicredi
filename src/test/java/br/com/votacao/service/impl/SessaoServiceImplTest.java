@@ -1,0 +1,91 @@
+package br.com.votacao.service.impl;
+
+import br.com.votacao.controller.errors.NegocioException;
+import br.com.votacao.domain.Sessao;
+import br.com.votacao.repository.SessaoRepository;
+import br.com.votacao.service.SessaoService;
+import br.com.votacao.unittest.UnitTest;
+import org.jmock.Expectations;
+import org.jmock.auto.Mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
+import static org.junit.Assert.assertSame;
+
+public class SessaoServiceImplTest extends UnitTest {
+
+    @RunWith(Suite.class)
+    @SuiteClasses({ })
+    public static class AllTests {}
+
+    @Mock protected SessaoRepository sessaoRepositoryMock;
+
+    protected SessaoService sessaoService;
+
+    private Sessao sessao;
+    private Sessao sessaoConsultada;
+
+    private Optional<Sessao> optionalSessao;
+
+    @Before
+    public void inicializarContexto() {
+        sessaoService = new SessaoServiceImpl(sessaoRepositoryMock);
+
+        sessao = new Sessao();
+        sessao.setSequencial(1L);
+
+        sessaoConsultada = new Sessao();
+        sessaoConsultada.setDuracao(ZonedDateTime.now().plusMinutes(2));
+        optionalSessao = Optional.of(sessaoConsultada);
+    }
+
+    @Test
+    public void deveriaRetornarSessaoCadastrada() {
+        contexto.checking(new Expectations(){{
+            oneOf(sessaoRepositoryMock).save(with(same(sessao)));
+            will(returnValue(sessao));
+        }});
+
+        Sessao sessaoCadastrada = cadastrar();
+        assertSame(sessao, sessaoCadastrada);
+    }
+
+    private Sessao cadastrar() {
+        return sessaoService.cadastrar(sessao);
+    }
+
+    @Test
+    public void deveriaConsultarSessao() {
+        contexto.checking(new Expectations(){{
+            oneOf(sessaoRepositoryMock).findById(with(equal(sessao.getSequencial())));
+            will(returnValue(optionalSessao));
+        }});
+
+        sessaoService.validar(sessao);
+    }
+
+    @Test
+    public void deveriaLancarExcecaoParaSessaoEncerrada() {
+        sessaoConsultada.setDuracao(ZonedDateTime.now().minusMinutes(2));
+        permitirConsultarSessao();
+
+        contextoExcecao.expect(NegocioException.class);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+
+        sessaoService.validar(sessao);
+    }
+
+    void permitirConsultarSessao() {
+        contexto.checking(new Expectations() {{
+            allowing(sessaoRepositoryMock).findById(with(any(Long.class)));
+            will(returnValue(optionalSessao));
+        }});
+    }
+}
