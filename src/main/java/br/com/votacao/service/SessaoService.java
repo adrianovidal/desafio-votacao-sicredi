@@ -7,4 +7,6 @@ public interface SessaoService {
     void validar(Sessao sessao);
 
     Sessao cadastrar(Sessao sessao);
+
+    Sessao consultar(Long idPauta, Long idSessaso);
 }

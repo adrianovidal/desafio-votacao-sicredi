@@ -1,5 +1,6 @@
 package br.com.votacao.unittest;
 
+import br.com.votacao.service.impl.ResultadoServiceImplTest;
 import br.com.votacao.service.impl.SessaoServiceImplTest;
 import br.com.votacao.service.impl.VotoServiceImplTest;
 import org.junit.runner.RunWith;
@@ -10,8 +11,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    SessaoServiceImplTest.class,
-    VotoServiceImplTest.class
+        SessaoServiceImplTest.class,
+        VotoServiceImplTest.class,
+        ResultadoServiceImplTest.class
 })
 public class FastUnitTests {
 

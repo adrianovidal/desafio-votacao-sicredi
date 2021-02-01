@@ -1,9 +1,7 @@
 package br.com.votacao.domain;
 
 import javax.persistence.*;
-
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -20,6 +18,8 @@ public class Sessao {
     private Pauta pauta;
 
     private ZonedDateTime duracao;
+
+    private boolean enviadoKafka;
 
     public Long getSequencial() {
         return sequencial;
@@ -43,6 +43,14 @@ public class Sessao {
 
     public void setDuracao(ZonedDateTime duracao) {
         this.duracao = duracao;
+    }
+
+    public boolean isEnviadoKafka() {
+        return enviadoKafka;
+    }
+
+    public void setEnviadoKafka(boolean enviadoKafka) {
+        this.enviadoKafka = enviadoKafka;
     }
 
     @Override

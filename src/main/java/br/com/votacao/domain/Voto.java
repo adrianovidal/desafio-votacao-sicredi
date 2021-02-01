@@ -70,12 +70,11 @@ public class Voto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voto voto = (Voto) o;
-        return Objects.equals(sessao, voto.sessao) &&
-                Objects.equals(associadoIden, voto.associadoIden);
+        return Objects.equals(id, voto.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessao, associadoIden);
+        return Objects.hash(id);
     }
 }

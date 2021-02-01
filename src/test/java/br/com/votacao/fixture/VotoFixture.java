@@ -10,4 +10,18 @@ public class VotoFixture {
         voto.setAssociadoCpf("07568173070");
         return voto;
     }
+
+    public static Voto umVotoSim(Long idVoto) {
+        Voto voto = new Voto();
+        voto.setId(idVoto);
+        voto.setVoto("Sim");
+        return voto;
+    }
+
+    public static Voto umVotoNao(Long idVoto) {
+        Voto voto = new Voto();
+        voto.setId(idVoto);
+        voto.setVoto("Não");
+        return voto;
+    }
 }

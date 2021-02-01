@@ -4,6 +4,7 @@ import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
+import br.com.votacao.share.Resultado;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,5 +37,10 @@ public class SessaoServiceImpl implements SessaoService {
     @Override
     public Sessao cadastrar(Sessao sessao) {
         return this.sessaoRepository.save(sessao);
+    }
+
+    @Override
+    public Sessao consultar(Long idPauta, Long idSessaso) {
+        return null;
     }
 }
