@@ -1,14 +1,14 @@
 package br.com.votacao.share.builders;
 
-import br.com.votacao.share.response.ResultadoResponse;
+import br.com.votacao.share.response.Resultado;
 import br.com.votacao.share.enuns.ResultadoEnum;
 
 public class ResultadoBuild {
 
-    private final ResultadoResponse resultadoResponse;
+    private final Resultado resultado;
 
     private ResultadoBuild() {
-        resultadoResponse = new ResultadoResponse();
+        resultado = new Resultado();
     }
 
     public static ResultadoBuild of() {
@@ -16,36 +16,36 @@ public class ResultadoBuild {
     }
 
     public ResultadoBuild comIdSessao(Long idSessao) {
-        this.resultadoResponse.setIdSessao(idSessao);
+        this.resultado.setIdSessao(idSessao);
         return this;
     }
 
     public ResultadoBuild comIdPauta(Long idPauta) {
-        this.resultadoResponse.setIdPauta(idPauta);
+        this.resultado.setIdPauta(idPauta);
         return this;
     }
 
     public ResultadoBuild comVotosSim(Integer votosSim) {
-        this.resultadoResponse.setVotosSim(votosSim);
+        this.resultado.setVotosSim(votosSim);
         return this;
     }
 
     public ResultadoBuild comVotosNao(Integer votosNao) {
-        this.resultadoResponse.setVotosNao(votosNao);
+        this.resultado.setVotosNao(votosNao);
         return this;
     }
 
     public ResultadoBuild comTotalVotos(Integer totalVoto) {
-        this.resultadoResponse.setTotalVotos(totalVoto);
+        this.resultado.setTotalVotos(totalVoto);
         return this;
     }
 
     public ResultadoBuild comResultado(ResultadoEnum resultadoEnum) {
-        this.resultadoResponse.setResultado(resultadoEnum);
+        this.resultado.setResultado(resultadoEnum);
         return this;
     }
 
-    public ResultadoResponse build() {
-        return resultadoResponse;
+    public Resultado build() {
+        return resultado;
     }
 }

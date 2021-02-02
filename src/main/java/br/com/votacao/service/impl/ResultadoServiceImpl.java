@@ -6,7 +6,7 @@ import br.com.votacao.domain.Voto;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.VotoService;
-import br.com.votacao.share.response.ResultadoResponse;
+import br.com.votacao.share.response.Resultado;
 import br.com.votacao.share.builders.ResultadoBuild;
 import org.springframework.stereotype.Service;
 
@@ -31,13 +31,13 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
-    public ResultadoResponse resultado(ResultadoResponse resultadoResponse) {
-        Sessao sessao = this.sessaoService.consultar(resultadoResponse.getIdPauta(), resultadoResponse.getIdSessao());
+    public Resultado resultado(Resultado resultado) {
+        Sessao sessao = this.sessaoService.consultar(resultado.getIdPauta(), resultado.getIdSessao());
         validarSessaoAberta(sessao);
 
         List<Voto> votos = this.votoService.consultarVotos(sessao);
 
-        return computarResultado(resultadoResponse, sessao, votos);
+        return computarResultado(resultado, sessao, votos);
     }
 
     private void validarSessaoAberta(Sessao sessao) {
@@ -46,11 +46,11 @@ public class ResultadoServiceImpl implements ResultadoService {
         }
     }
 
-    private ResultadoResponse computarResultado(ResultadoResponse resultadoResponse, Sessao sessao, List<Voto> votos) {
+    private Resultado computarResultado(Resultado resultado, Sessao sessao, List<Voto> votos) {
         return ResultadoBuild.of()
                 .comTotalVotos(votos.size())
-                .comIdPauta(resultadoResponse.getIdPauta())
-                .comIdSessao(resultadoResponse.getIdSessao())
+                .comIdPauta(resultado.getIdPauta())
+                .comIdSessao(resultado.getIdSessao())
                 .comResultado(sessao.obterTipoResultado())
                 .comVotosSim(obterVotosPorTipo(votos, SIM.getDescricao()))
                 .comVotosNao(obterVotosPorTipo(votos, NAO.getDescricao()))

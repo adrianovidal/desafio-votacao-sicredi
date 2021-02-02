@@ -7,6 +7,7 @@ public class PautaFixture {
     public static Pauta umaPauta() {
         Pauta pauta = new Pauta();
         pauta.setId(1L);
+        pauta.setNome("Licitação");
         return pauta;
     }
 }

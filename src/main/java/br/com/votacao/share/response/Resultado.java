@@ -2,7 +2,7 @@ package br.com.votacao.share.response;
 
 import br.com.votacao.share.enuns.ResultadoEnum;
 
-public class ResultadoResponse {
+public class Resultado {
 
     private Long idPauta;
     private Long idSessao;

@@ -8,7 +8,7 @@ import br.com.votacao.fixture.SessaoFixture;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.VotoService;
-import br.com.votacao.share.response.ResultadoResponse;
+import br.com.votacao.share.response.Resultado;
 import br.com.votacao.unittest.UnitTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,15 +27,15 @@ import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 
-public class ResultadoResponseServiceImplTest extends UnitTest {
+public class ResultadoServiceImplTest extends UnitTest {
 
     @Mock protected SessaoService sessaoServiceMock;
     @Mock protected VotoService votoServiceMock;
 
     protected ResultadoService resultadoService;
 
-    protected ResultadoResponse resultadoResponse;
-    protected ResultadoResponse resultadoResponseEsperado;
+    protected Resultado resultado;
+    protected Resultado resultadoEsperado;
     protected Sessao sessao;
     protected List<Voto> votos;
     protected String mensagem;
@@ -44,8 +44,8 @@ public class ResultadoResponseServiceImplTest extends UnitTest {
     public void inicializarContexto() {
         resultadoService = new ResultadoServiceImpl(sessaoServiceMock, votoServiceMock);
 
-        resultadoResponse = ResultadoFixture.umResultado();
-        resultadoResponseEsperado = ResultadoFixture.umResultadoFinal();
+        resultado = ResultadoFixture.umResultado();
+        resultadoEsperado = ResultadoFixture.umResultadoFinal();
 
         sessao = SessaoFixture.umaSessao();
 
@@ -56,7 +56,7 @@ public class ResultadoResponseServiceImplTest extends UnitTest {
     @Test
     public void deveriaConsultarSessaoPeloIdEhPelaPauta() {
         contexto.checking(new Expectations(){{
-            oneOf(sessaoServiceMock).consultar(with(same(resultadoResponse.getIdPauta())), with(same(resultadoResponse.getIdSessao())));
+            oneOf(sessaoServiceMock).consultar(with(same(resultado.getIdPauta())), with(same(resultado.getIdSessao())));
             will(returnValue(sessao));
         }});
         permitirConsultarVotosDaSessao();
@@ -91,19 +91,19 @@ public class ResultadoResponseServiceImplTest extends UnitTest {
         permitirConsultarSessao();
         permitirConsultarVotosDaSessao();
 
-        ResultadoResponse resultadoResponseConsultado = consultarResultado();
-        Assert.assertEquals(converterInt(""+ votos.size()), resultadoResponseConsultado.getTotalVotos());
-        Assert.assertEquals(converterInt("3"), resultadoResponseConsultado.getVotosSim());
-        Assert.assertEquals(converterInt("2"), resultadoResponseConsultado.getVotosNao());
-        Assert.assertEquals(converterInt("5"), resultadoResponseConsultado.getTotalVotos());
+        Resultado resultadoConsultado = consultarResultado();
+        Assert.assertEquals(converterInt(""+ votos.size()), resultadoConsultado.getTotalVotos());
+        Assert.assertEquals(converterInt("3"), resultadoConsultado.getVotosSim());
+        Assert.assertEquals(converterInt("2"), resultadoConsultado.getVotosNao());
+        Assert.assertEquals(converterInt("5"), resultadoConsultado.getTotalVotos());
     }
 
     private Integer converterInt(String valor) {
         return parseInt(valor);
     }
 
-    private ResultadoResponse consultarResultado() {
-        return resultadoService.resultado(this.resultadoResponse);
+    private Resultado consultarResultado() {
+        return resultadoService.resultado(this.resultado);
     }
 
     void permitirConsultarSessao() {
@@ -123,7 +123,7 @@ public class ResultadoResponseServiceImplTest extends UnitTest {
     private void converterEmJson() {
         ObjectWriter ow = new ObjectMapper().writer();
         try {
-            mensagem = ow.writeValueAsString(resultadoResponseEsperado);
+            mensagem = ow.writeValueAsString(resultadoEsperado);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

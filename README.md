@@ -15,7 +15,7 @@ determinado na chamada de abertura ou 1 minuto por default);
 * Receber votos dos associados em pautas (os votos são apenas 'Sim'/'Não'. Cada associado é
 identificado por um id único e pode votar apenas uma vez por pauta);
 
-* Contabilizar os votos e dar o resultadoResponse da votação na pauta
+* Contabilizar os votos e dar o resultado da votação na pauta
 
 Para fins de exercício, a segurança das interfaces pode ser abstraída e qualquer chamada para as interfaces
 pode ser considerada como autorizada. A escolha da linguagem, frameworks e bibliotecas é livre (desde que
@@ -63,4 +63,4 @@ não infrinja direitos de uso).
 - **Cadastro de Sessão:** Ao ser aberta a sessão para votação, poderá ser indicado seu tempo de duração, do contrário, ela terá duração padrão de 1 (um) minuto. A sessão é fechada para votação automaticamente após completar o tempo de duração.
 - **Cadastro de voto:**  Os votos são realizados em uma sessão com as opções 'Sim'/'Não'. O associado deve informar sua identificação para evitar duplicidade do seu voto na mesma sessão. O CPF é opcional, caso seja informado, será validado.
 - **Validação de CPF:** Todo voto acompanhado do CPF do associado será validado por um serviço externo. Se positivo, o associado tem seu voto registrado. Em caso negativo, é notificado que o associado não poderá realizar a votação.
-- **Resultado da votação:** É possível consultar a votação com resultados parciais e final. Ao fechamento da votação é realizado o envio automático do resultadoResponse por mensageria.
+- **Resultado da votação:** É possível consultar a votação com resultados parciais e final. Ao fechamento da votação é realizado o envio automático do resultado por mensageria.

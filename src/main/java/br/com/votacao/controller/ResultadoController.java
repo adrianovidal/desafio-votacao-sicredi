@@ -1,7 +1,7 @@
 package br.com.votacao.controller;
 
 import br.com.votacao.service.ResultadoService;
-import br.com.votacao.share.response.ResultadoResponse;
+import br.com.votacao.share.response.Resultado;
 import br.com.votacao.share.dto.ResultadoDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +23,16 @@ public class ResultadoController {
 
 	@PostMapping(value = "/resultado", produces="application/json")
 	public ResultadoDto save(@RequestBody ResultadoDto resultadoDto) {
-		ResultadoResponse resultadoResponse = converterEmEntity(resultadoDto);
-		ResultadoResponse resultadoResponseFinal = this.resultadoService.resultado(resultadoResponse);
-		return convertToDto(resultadoResponseFinal);
+		Resultado resultado = converterEmEntity(resultadoDto);
+		Resultado resultadoFinal = this.resultadoService.resultado(resultado);
+		return convertToDto(resultadoFinal);
 	}
 
-	private ResultadoResponse converterEmEntity(ResultadoDto resultadoDto) {
-		return modelMapper.map(resultadoDto, ResultadoResponse.class);
+	private Resultado converterEmEntity(ResultadoDto resultadoDto) {
+		return modelMapper.map(resultadoDto, Resultado.class);
 	}
 
-	private ResultadoDto convertToDto(ResultadoResponse resultadoResponse) {
-		return modelMapper.map(resultadoResponse, ResultadoDto.class);
+	private ResultadoDto convertToDto(Resultado resultado) {
+		return modelMapper.map(resultado, ResultadoDto.class);
 	}
 }

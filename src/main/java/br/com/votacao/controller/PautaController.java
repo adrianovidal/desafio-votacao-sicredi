@@ -23,7 +23,8 @@ public class PautaController {
 
 	@PostMapping(value = "/pauta", produces="application/json")
 	public PautaDto save(@RequestBody PautaDto pautaDto) {
-		Pauta pauta = pautaRepository.save(converterEmEntity(pautaDto));
+		Pauta pautaEntity = converterEmEntity(pautaDto);
+		Pauta pauta = pautaRepository.save(pautaEntity);
 		return convertToDto(pauta);
 	}
 
