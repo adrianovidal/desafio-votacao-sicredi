@@ -4,6 +4,8 @@ import br.com.votacao.service.impl.ResultadoServiceImplTest;
 import br.com.votacao.service.impl.SessaoServiceImplTest;
 import br.com.votacao.service.impl.VerificarCpfAssociadoServiceImplTest;
 import br.com.votacao.service.impl.VotoServiceImplTest;
+import br.com.votacao.share.converter.DateStringConverterTest;
+import br.com.votacao.share.converter.StringDateConverterTest;
 import br.com.votacao.share.dto.PautaDtoTest;
 import br.com.votacao.share.dto.ResultadoDtoTest;
 import br.com.votacao.share.dto.SessaoDtoTest;
@@ -24,7 +26,10 @@ import org.junit.runners.Suite;
         PautaDtoTest.class,
         ResultadoDtoTest.class,
         SessaoDtoTest.class,
-        VotoDtoTest.class
+        VotoDtoTest.class,
+
+        DateStringConverterTest.class,
+        StringDateConverterTest.class
 })
 public class FastUnitTests {
 

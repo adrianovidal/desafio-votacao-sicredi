@@ -39,7 +39,7 @@ não infrinja direitos de uso).
 
 **Java** - Linguagem principal.
 
-**Docker** - Para execução do Kafka, o arquivo docker-compose.yml apresenta as configurações basicas de execução.
+**Docker** - Para execução do Kafka, o arquivo docker-compose.yml apresenta as configurações básicas de execução.
 - `docke-compose -f docker-compose.yml up -d`
 
 ## Links
@@ -51,14 +51,14 @@ não infrinja direitos de uso).
 
 ## Modelos
 
-- **Pauta** - Representa a Pauta
-- **Sessao** - Representa as sessões de uma Pauta. Não é necessário duplicar um Pauta para abrir outra sessão de votação
-- **Voto** - Representa os votos dos associados para a sessão
+- **Pauta** - Representa a tema a ser votado.
+- **Sessão** - Representa as sessões de votação de uma pauta. Não é necessário duplicar uma pauta para abrir outra sessão de votação.
+- **Voto** - Representa os votos dos associados para a sessão.
 
 ## Aplicação
 
-- **Cadastro de uma Pauta:** Criação de uma nova pauta informando seu título;
-- **Cadastro de Sessão:** Sessão aberta para votação, deverá ser informando a duração da sessão, ou a mesma terá duração padrão de 1 (um) minuto. A Sessão e fechada para votação automaticamente após completar o tempo de duração.
-- **Cadastro de voto:**  Os votos são realizados em uma sessão com as opções (Sim/Não), também deve ser informado a identificação do associado, para evitar que seja realizada a votação do associado na mesma sessão. O CPF é opcional, caso seja informado, será validado.
-- **Validação de CPF:** Todo voto acompanhado do CPF do associado será validado por um serviço externo. Caso positivo o associado tem seu voto registrado, em caso negativo é informado que o associado não poderá realizar a votação.
-- **Resultado da votação:** É possível consultar a votação com resultados parciais e finais. Ao fechamento da votação é realizado automaticamente o envio do resultado por mensageria.
+- **Cadastro de Pauta:** Criação de uma nova pauta informando seu título.
+- **Cadastro de Sessão:** Ao ser aberta a sessão para votação, deverá ser informado seu tempo de duração, do contrário, ela terá duração padrão de 1 (um) minuto. A sessão é fechada para votação automaticamente após completar o tempo de duração.
+- **Cadastro de voto:**  Os votos são realizados em uma sessão com as opções "Sim/Não". O associado deve informar sua identificação para evitar duplicidade do seu voto na mesma sessão. O CPF é opcional, caso seja informado, será validado.
+- **Validação de CPF:** Todo voto acompanhado do CPF do associado será validado por um serviço externo. Se for positivo, o associado tem seu voto registrado. Em caso negativo, é informado que o associado não poderá realizar a votação.
+- **Resultado da votação:** É possível consultar a votação com resultados parciais e finais. Ao fechamento da votação, é realizado automaticamente o envio do resultado por mensageria.

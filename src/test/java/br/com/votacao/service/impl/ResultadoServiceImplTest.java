@@ -18,9 +18,6 @@ import org.jmock.auto.Mock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,10 +29,6 @@ import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 
 public class ResultadoServiceImplTest extends UnitTest {
-
-    @RunWith(Suite.class)
-    @SuiteClasses({ })
-    public static class AllTests {}
 
     @Mock protected SessaoService sessaoServiceMock;
     @Mock protected VotoService votoServiceMock;

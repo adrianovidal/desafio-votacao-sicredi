@@ -11,9 +11,6 @@ import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -23,10 +20,6 @@ import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
 import static org.junit.Assert.assertSame;
 
 public class SessaoServiceImplTest extends UnitTest {
-
-    @RunWith(Suite.class)
-    @SuiteClasses({ })
-    public static class AllTests {}
 
     @Mock protected SessaoRepository sessaoRepositoryMock;
     @Mock protected PautaRepository pautaRepositoryMock;

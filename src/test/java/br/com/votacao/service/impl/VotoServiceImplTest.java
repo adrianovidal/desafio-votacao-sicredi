@@ -15,9 +15,6 @@ import org.jmock.auto.Mock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +22,6 @@ import java.util.List;
 import static br.com.votacao.share.Constants.O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO;
 
 public class VotoServiceImplTest extends UnitTest {
-
-    @RunWith(Suite.class)
-    @SuiteClasses({
-    })
-    public static class AllTests {}
 
     @Mock protected VerificarCpfAssociadoService verificarCpfAssociadoServiceMock;
     @Mock protected VotoRepository votoRepositoryMock;
