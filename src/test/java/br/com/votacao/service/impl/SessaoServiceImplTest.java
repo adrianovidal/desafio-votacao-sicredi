@@ -88,6 +88,17 @@ public class SessaoServiceImplTest extends UnitTest {
         validar();
     }
 
+    @Test
+    public void deveriaLancarExcecaoParaSessaoNaoEncontrada() {
+        optionalSessao = Optional.empty();
+        permitirConsultarSessao();
+
+        contextoExcecao.expect(NegocioException.class);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+
+        validar();
+    }
+
     private void validar() {
         sessaoService.validar(sessao);
     }

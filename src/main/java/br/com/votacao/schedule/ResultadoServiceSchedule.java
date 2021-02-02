@@ -35,7 +35,7 @@ public class ResultadoServiceSchedule {
         this.resultadoService = resultadoService;
     }
 
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "${resultado.repeatInterval}")
     public void veriricarSessosFinalizadasSemResultadoEnviado() {
         List<Sessao> sessoesNaoEnviadas = sessaoService.consultarSessoesFinalizadasSemResultadoEnviaddo();
         sessoesNaoEnviadas.forEach(sessao -> {

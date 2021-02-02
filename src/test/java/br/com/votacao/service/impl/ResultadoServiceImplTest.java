@@ -1,5 +1,6 @@
 package br.com.votacao.service.impl;
 
+import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.domain.Voto;
 import br.com.votacao.fixture.ResultadoFixture;
@@ -21,10 +22,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static br.com.votacao.fixture.VotoFixture.umVotoNao;
 import static br.com.votacao.fixture.VotoFixture.umVotoSim;
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 
@@ -75,6 +78,28 @@ public class ResultadoServiceImplTest extends UnitTest {
             oneOf(votoServiceMock).consultarVotos(with(same(sessao)));
             will(returnValue(votos));
         }});
+
+        consultarResultado();
+    }
+
+    @Test
+    public void deveriaLancarExcecaoParaSessaoEncerrada() {
+        sessao.setDuracao(ZonedDateTime.now().minusMinutes(2));
+        permitirConsultarSessao();
+
+        contextoExcecao.expect(NegocioException.class);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+
+        consultarResultado();
+    }
+
+    @Test
+    public void deveriaLancarExcecaoParaSessaoNaoEncontrada() {
+        sessao = null;
+        permitirConsultarSessao();
+
+        contextoExcecao.expect(NegocioException.class);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
 
         consultarResultado();
     }

@@ -1,5 +1,6 @@
 package br.com.votacao.service.impl;
 
+import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.domain.Voto;
 import br.com.votacao.service.ResultadoService;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
 import static br.com.votacao.share.enuns.OpcaoVoto.NAO;
 import static br.com.votacao.share.enuns.OpcaoVoto.SIM;
+import static br.com.votacao.share.util.VerificadorUtil.estaNulo;
+import static java.time.ZonedDateTime.now;
 
 @Service
 public class ResultadoServiceImpl implements ResultadoService {
@@ -29,10 +33,17 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public Resultado resultado(Resultado resultado) {
         Sessao sessao = this.sessaoService.consultar(resultado.getIdPauta(), resultado.getIdSessao());
+        validarSessaoAberta(sessao);
 
         List<Voto> votos = this.votoService.consultarVotos(sessao);
 
         return computarResultado(resultado, sessao, votos);
+    }
+
+    private void validarSessaoAberta(Sessao sessao) {
+        if (estaNulo(sessao) || now().isAfter(sessao.getDuracao())) {
+            throw new NegocioException(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+        }
     }
 
     private Resultado computarResultado(Resultado resultado, Sessao sessao, List<Voto> votos) {
