@@ -7,10 +7,11 @@ import br.com.votacao.share.converter.StringDateConverter;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 import static java.lang.Long.parseLong;
 import static java.time.ZonedDateTime.now;
+import static java.util.Date.from;
 import static org.junit.Assert.assertEquals;
 
 public class SessaoDtoTest {
@@ -39,12 +40,13 @@ public class SessaoDtoTest {
 
         Sessao sessao = modelMapper.map(sessaoDto, Sessao.class);
         assertEquals(sessaoDto.getSequencial(), sessao.getSequencial());
-        assertEquals(obterDuracao(sessaoDto), sessao.getDuracao());
+        assertEquals(obterDuracao(sessaoDto), from(sessao.getDuracao().toInstant()).toString());
         assertEquals(sessaoDto.getPautaId(), sessao.getPauta().getId());
     }
 
-    private ZonedDateTime obterDuracao(SessaoDto sessaoDto) {
-        return now().plusMinutes(parseLong(sessaoDto.getDuracao()));
+    private String obterDuracao(SessaoDto sessaoDto) {
+        Date date = from(now().plusMinutes(parseLong(sessaoDto.getDuracao())).toInstant());
+        return date.toString();
     }
 
     public ModelMapper modelMapper() {

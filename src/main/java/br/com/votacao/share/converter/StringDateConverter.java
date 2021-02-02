@@ -10,7 +10,7 @@ import static java.lang.Long.parseLong;
 public class StringDateConverter extends AbstractConverter<String, ZonedDateTime> {
 
     /**
-     *
+     * Demonstrar a conversão entre tipos distintos
      * @param data - duração da sessão
      * @return Retona a hora de fechamento da sessão, caso não seja informando a duração da sessão, a mesma terá
      * duração de 1 minuto
