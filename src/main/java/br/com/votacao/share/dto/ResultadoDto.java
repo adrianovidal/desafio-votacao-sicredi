@@ -11,16 +11,16 @@ public class ResultadoDto {
     @ApiModelProperty(notes = "Identificação da Sessão", required = true, name="idSessao")
     private Long idSessao;
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(readOnly = true)
     private Integer votosSim;
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(readOnly = true)
     private Integer votosNao;
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(readOnly = true)
     private Integer totalVotos;
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(readOnly = true)
     private ResultadoEnum resultado;
 
     public Long getIdPauta() {

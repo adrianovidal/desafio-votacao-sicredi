@@ -5,4 +5,5 @@ public interface Constants {
     String SESSAO_NAO_ENCONTRADA_OU_ENCERRADA = "Sessão não encontrada ou encerrada!";
     String O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO = "O associado já realizou seu voto nesta sessão!";
     String ASSOCIADO_IMPOSSIBILITADO_DE_VOTAR = "Associado impossibilitado de votar!";
+    String PAUTA_NAO_LOCALIZADA_INFORMAR_VALOR_CORRETO_OU_CADADASTAR = "Pauta não localizada, informar valor correto ou cadadastar";
 }

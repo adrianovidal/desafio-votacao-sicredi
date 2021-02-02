@@ -1,7 +1,9 @@
 package br.com.votacao.service.impl;
 
 import br.com.votacao.controller.errors.NegocioException;
+import br.com.votacao.domain.Pauta;
 import br.com.votacao.domain.Sessao;
+import br.com.votacao.repository.PautaRepository;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.unittest.UnitTest;
@@ -16,6 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import static br.com.votacao.share.Constants.PAUTA_NAO_LOCALIZADA_INFORMAR_VALOR_CORRETO_OU_CADADASTAR;
 import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
 import static org.junit.Assert.assertSame;
 
@@ -26,20 +29,24 @@ public class SessaoServiceImplTest extends UnitTest {
     public static class AllTests {}
 
     @Mock protected SessaoRepository sessaoRepositoryMock;
+    @Mock protected PautaRepository pautaRepositoryMock;
 
     protected SessaoService sessaoService;
 
     private Sessao sessao;
     private Sessao sessaoConsultada;
 
+    private Pauta pauta;
+
     private Long idSessao;
     private Long idPauta;
 
     private Optional<Sessao> optionalSessao;
+    private Optional<Pauta> optionalPauta;
 
     @Before
     public void inicializarContexto() {
-        sessaoService = new SessaoServiceImpl(sessaoRepositoryMock);
+        sessaoService = new SessaoServiceImpl(sessaoRepositoryMock, pautaRepositoryMock);
 
         sessao = new Sessao();
         sessao.setSequencial(1L);
@@ -48,8 +55,37 @@ public class SessaoServiceImplTest extends UnitTest {
         sessaoConsultada.setDuracao(ZonedDateTime.now().plusMinutes(2));
         optionalSessao = Optional.of(sessaoConsultada);
 
+        pauta = new Pauta();
+        pauta.setId(1L);
+        sessao.setPauta(pauta);
+        optionalPauta = Optional.of(pauta);
+
         idSessao = 1L;
         idPauta = 1L;
+    }
+
+    @Test
+    public void deveriaConsultarPautaParaValidacao() {
+        contexto.checking(new Expectations(){{
+            oneOf(pautaRepositoryMock).findById(with(same(sessao.getPauta().getId())));
+            will(returnValue(optionalPauta));
+        }});
+        permitirCadastrarSessao();
+
+        cadastrar();
+    }
+
+    @Test
+    public void deveriaLancarExcecaoParaPautaNaoEncontrada() {
+        optionalPauta = Optional.empty();
+
+        permitirConsultarPaulta();
+        permitirCadastrarSessao();
+
+        contextoExcecao.expect(NegocioException.class);
+        contextoExcecao.expectMessage(PAUTA_NAO_LOCALIZADA_INFORMAR_VALOR_CORRETO_OU_CADADASTAR);
+
+        cadastrar();
     }
 
     @Test
@@ -65,6 +101,20 @@ public class SessaoServiceImplTest extends UnitTest {
 
     private Sessao cadastrar() {
         return sessaoService.cadastrar(sessao);
+    }
+
+    void permitirConsultarPaulta() {
+        contexto.checking(new Expectations() {{
+            allowing(pautaRepositoryMock).findById(with(any(Long.class)));
+            will(returnValue(optionalPauta));
+        }});
+    }
+
+    void permitirCadastrarSessao() {
+        contexto.checking(new Expectations() {{
+            allowing(sessaoRepositoryMock).save(with(any(Sessao.class)));
+            will(returnValue(sessao));
+        }});
     }
 
     @Test

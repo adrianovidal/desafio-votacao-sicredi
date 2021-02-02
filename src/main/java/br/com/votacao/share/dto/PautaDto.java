@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class PautaDto {
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(readOnly = true)
     private Long id;
 
     @ApiModelProperty(notes = "Nome da pauta", required = true, name="nome")

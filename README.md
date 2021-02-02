@@ -1,9 +1,5 @@
 # Desafio Técnico
 
-## Para rodar projeto: 
-
-    - `docke-compose -f docker-compose.yml up -d`
-
 ## Objetivo: 
 
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação.
@@ -26,3 +22,43 @@ pode ser considerada como autorizada. A escolha da linguagem, frameworks e bibli
 não infrinja direitos de uso).
 
 É importante que as pautas e os votos sejam persistidos e que não sejam perdidos com o restart da aplicação.
+
+## Linguagens/Tecnologias:
+- Java 1.8
+- JPA
+- JUnit 4 (testes unitários automatizados)
+- Spring-Boot
+- Maven
+- Docker
+- ModelMapper
+- Kafka (Mensageria Pub/Sub)
+- Swagger
+- Banco de Dados H2
+
+## Requisitos:
+
+**Java** - Linguagem principal.
+
+**Docker** - Para execução do Kafka, o arquivo docker-compose.yml apresenta as configurações basicas de execução.
+- `docke-compose -f docker-compose.yml up -d`
+
+## Links
+
+- [Execução da API](http://localhost:9000)
+- [Console do Banco H2](http://localhost:9000/h2-console)
+- [Swagger](http://localhost:9000/swagger-ui.html)
+- [Repopsitório](https://github.com/adrianovidal/desafio-votacao-api.git)
+
+## Modelos
+
+- **Pauta** - Representa a Pauta
+- **Sessao** - Representa as sessões de uma Pauta. Não é necessário duplicar um Pauta para abrir outra sessão de votação
+- **Voto** - Representa os votos dos associados para a sessão
+
+## Aplicação
+
+- **Cadastro de uma Pauta:** Criação de uma nova pauta informando seu título;
+- **Cadastro de Sessão:** Sessão aberta para votação, deverá ser informando a duração da sessão, ou a mesma terá duração padrão de 1 (um) minuto. A Sessão e fechada para votação automaticamente após completar o tempo de duração.
+- **Cadastro de voto:**  Os votos são realizados em uma sessão com as opções (Sim/Não), também deve ser informado a identificação do associado, para evitar que seja realizada a votação do associado na mesma sessão. O CPF é opcional, caso seja informado, será validado.
+- **Validação de CPF:** Todo voto acompanhado do CPF do associado será validado por um serviço externo. Caso positivo o associado tem seu voto registrado, em caso negativo é informado que o associado não poderá realizar a votação.
+- **Resultado da votação:** É possível consultar a votação com resultados parciais e finais. Ao fechamento da votação é realizado automaticamente o envio do resultado por mensageria.
