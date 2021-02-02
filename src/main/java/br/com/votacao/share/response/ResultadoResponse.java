@@ -1,8 +1,8 @@
-package br.com.votacao.share;
+package br.com.votacao.share.response;
 
 import br.com.votacao.share.enuns.ResultadoEnum;
 
-public class Resultado {
+public class ResultadoResponse {
 
     private Long idPauta;
     private Long idSessao;

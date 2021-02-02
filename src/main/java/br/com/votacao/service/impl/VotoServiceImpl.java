@@ -38,7 +38,7 @@ public class VotoServiceImpl implements VotoService {
         this.sessaoService.validar(voto.getSessao());
         validarVoto(voto);
 
-        Voto votoSalvo = this.votoRepository.save(voto);
+        this.votoRepository.save(voto);
     }
 
     @Override

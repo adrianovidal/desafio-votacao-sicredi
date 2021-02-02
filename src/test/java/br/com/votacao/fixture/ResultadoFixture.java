@@ -1,21 +1,21 @@
 package br.com.votacao.fixture;
 
-import br.com.votacao.share.Resultado;
+import br.com.votacao.share.response.ResultadoResponse;
 
 public class ResultadoFixture {
 
-    public static Resultado umResultado() {
-        Resultado resultado = new Resultado();
-        resultado.setIdPauta(1L);
-        resultado.setIdSessao(2L);
-        return resultado;
+    public static ResultadoResponse umResultado() {
+        ResultadoResponse resultadoResponse = new ResultadoResponse();
+        resultadoResponse.setIdPauta(1L);
+        resultadoResponse.setIdSessao(2L);
+        return resultadoResponse;
     }
 
-    public static Resultado umResultadoFinal() {
-        Resultado resultado = umResultado();
-        resultado.setVotosSim(3);
-        resultado.setVotosNao(2);
-        resultado.setTotalVotos(5);
-        return resultado;
+    public static ResultadoResponse umResultadoFinal() {
+        ResultadoResponse resultadoResponse = umResultado();
+        resultadoResponse.setVotosSim(3);
+        resultadoResponse.setVotosNao(2);
+        resultadoResponse.setTotalVotos(5);
+        return resultadoResponse;
     }
 }

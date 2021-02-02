@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.votacao.share.Constants.PAUTA_NAO_LOCALIZADA_INFORMAR_VALOR_CORRETO_OU_CADADASTAR;
-import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA;
 import static br.com.votacao.share.util.VerificadorUtil.estaNulo;
 import static java.time.ZonedDateTime.now;
 
@@ -35,7 +35,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     private void validarSessaoAberta(Sessao sessao) {
         if (estaNulo(sessao) || now().isAfter(sessao.getDuracao())) {
-            throw new NegocioException(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+            throw new NegocioException(SESSAO_NAO_ENCONTRADA);
         }
     }
 

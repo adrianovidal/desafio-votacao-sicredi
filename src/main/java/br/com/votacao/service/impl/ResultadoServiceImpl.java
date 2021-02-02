@@ -6,14 +6,14 @@ import br.com.votacao.domain.Voto;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.VotoService;
-import br.com.votacao.share.Resultado;
+import br.com.votacao.share.response.ResultadoResponse;
 import br.com.votacao.share.builders.ResultadoBuild;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA;
 import static br.com.votacao.share.enuns.OpcaoVoto.NAO;
 import static br.com.votacao.share.enuns.OpcaoVoto.SIM;
 import static br.com.votacao.share.util.VerificadorUtil.estaNulo;
@@ -31,26 +31,26 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
-    public Resultado resultado(Resultado resultado) {
-        Sessao sessao = this.sessaoService.consultar(resultado.getIdPauta(), resultado.getIdSessao());
+    public ResultadoResponse resultado(ResultadoResponse resultadoResponse) {
+        Sessao sessao = this.sessaoService.consultar(resultadoResponse.getIdPauta(), resultadoResponse.getIdSessao());
         validarSessaoAberta(sessao);
 
         List<Voto> votos = this.votoService.consultarVotos(sessao);
 
-        return computarResultado(resultado, sessao, votos);
+        return computarResultado(resultadoResponse, sessao, votos);
     }
 
     private void validarSessaoAberta(Sessao sessao) {
-        if (estaNulo(sessao) || now().isAfter(sessao.getDuracao())) {
-            throw new NegocioException(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+        if (estaNulo(sessao)) {
+            throw new NegocioException(SESSAO_NAO_ENCONTRADA);
         }
     }
 
-    private Resultado computarResultado(Resultado resultado, Sessao sessao, List<Voto> votos) {
+    private ResultadoResponse computarResultado(ResultadoResponse resultadoResponse, Sessao sessao, List<Voto> votos) {
         return ResultadoBuild.of()
                 .comTotalVotos(votos.size())
-                .comIdPauta(resultado.getIdPauta())
-                .comIdSessao(resultado.getIdSessao())
+                .comIdPauta(resultadoResponse.getIdPauta())
+                .comIdSessao(resultadoResponse.getIdSessao())
                 .comResultado(sessao.obterTipoResultado())
                 .comVotosSim(obterVotosPorTipo(votos, SIM.getDescricao()))
                 .comVotosNao(obterVotosPorTipo(votos, NAO.getDescricao()))

@@ -85,7 +85,6 @@ public class VotoServiceImplTest extends UnitTest {
 
         contexto.checking(new Expectations(){{
             oneOf(votoRepositoryMock).save(with(voto));
-            will(returnValue(votoCadastrado));
         }});
 
         votar();

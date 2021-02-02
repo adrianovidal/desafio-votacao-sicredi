@@ -3,7 +3,7 @@ package br.com.votacao.share.builders;
 import br.com.votacao.share.StatusCpf;
 import br.com.votacao.share.enuns.StatusPermissao;
 
-import static br.com.votacao.share.enuns.StatusPermissao.UNABLE_TO_VOTE;
+import static br.com.votacao.share.enuns.StatusPermissao.CPF_INVALIDO;
 
 public class StatusCpfBuild {
 
@@ -17,8 +17,8 @@ public class StatusCpfBuild {
         return new StatusCpfBuild();
     }
 
-    public static StatusCpf associadoIncapazDeVoto() {
-        return of().comStatus(UNABLE_TO_VOTE).build();
+    public static StatusCpf associadoComCpfInvalido() {
+        return of().comStatus(CPF_INVALIDO).build();
     }
 
     public StatusCpfBuild comStatus(StatusPermissao statusPermissao) {

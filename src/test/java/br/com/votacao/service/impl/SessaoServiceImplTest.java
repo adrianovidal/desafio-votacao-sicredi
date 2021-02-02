@@ -3,6 +3,8 @@ package br.com.votacao.service.impl;
 import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Pauta;
 import br.com.votacao.domain.Sessao;
+import br.com.votacao.fixture.PautaFixture;
+import br.com.votacao.fixture.SessaoFixture;
 import br.com.votacao.repository.PautaRepository;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
@@ -16,7 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static br.com.votacao.share.Constants.PAUTA_NAO_LOCALIZADA_INFORMAR_VALOR_CORRETO_OU_CADADASTAR;
-import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
+import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA;
 import static org.junit.Assert.assertSame;
 
 public class SessaoServiceImplTest extends UnitTest {
@@ -29,8 +31,6 @@ public class SessaoServiceImplTest extends UnitTest {
     private Sessao sessao;
     private Sessao sessaoConsultada;
 
-    private Pauta pauta;
-
     private Long idSessao;
     private Long idPauta;
 
@@ -41,15 +41,13 @@ public class SessaoServiceImplTest extends UnitTest {
     public void inicializarContexto() {
         sessaoService = new SessaoServiceImpl(sessaoRepositoryMock, pautaRepositoryMock);
 
-        sessao = new Sessao();
-        sessao.setSequencial(1L);
+        sessao = SessaoFixture.umaSessao();
 
         sessaoConsultada = new Sessao();
         sessaoConsultada.setDuracao(ZonedDateTime.now().plusMinutes(2));
         optionalSessao = Optional.of(sessaoConsultada);
 
-        pauta = new Pauta();
-        pauta.setId(1L);
+        Pauta pauta = PautaFixture.umaPauta();
         sessao.setPauta(pauta);
         optionalPauta = Optional.of(pauta);
 
@@ -83,6 +81,7 @@ public class SessaoServiceImplTest extends UnitTest {
 
     @Test
     public void deveriaRetornarSessaoCadastrada() {
+        permitirConsultarPaulta();
         contexto.checking(new Expectations(){{
             oneOf(sessaoRepositoryMock).save(with(same(sessao)));
             will(returnValue(sessao));
@@ -126,7 +125,7 @@ public class SessaoServiceImplTest extends UnitTest {
         permitirConsultarSessao();
 
         contextoExcecao.expect(NegocioException.class);
-        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA);
 
         validar();
     }
@@ -137,7 +136,7 @@ public class SessaoServiceImplTest extends UnitTest {
         permitirConsultarSessao();
 
         contextoExcecao.expect(NegocioException.class);
-        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
+        contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA);
 
         validar();
     }

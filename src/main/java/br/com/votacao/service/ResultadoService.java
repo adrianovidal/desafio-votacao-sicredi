@@ -1,8 +1,8 @@
 package br.com.votacao.service;
 
-import br.com.votacao.share.Resultado;
+import br.com.votacao.share.response.ResultadoResponse;
 
 public interface ResultadoService {
 
-    Resultado resultado(Resultado resultadoDto);
+    ResultadoResponse resultado(ResultadoResponse resultadoResponseDto);
 }

@@ -1,41 +1,40 @@
 package br.com.votacao.share.dto;
 
 import br.com.votacao.domain.Sessao;
-import br.com.votacao.share.Resultado;
+import br.com.votacao.share.response.ResultadoResponse;
 import br.com.votacao.share.converter.DateStringConverter;
 import br.com.votacao.share.converter.StringDateConverter;
 import br.com.votacao.share.enuns.ResultadoEnum;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 import static java.lang.Long.parseLong;
 import static java.time.ZonedDateTime.now;
 import static org.junit.Assert.assertEquals;
 
-public class ResultadoDtoTest {
+public class ResultadoResponseDtoTest {
 
     private final ModelMapper modelMapper =  modelMapper();
 
     @Test
     public void deveriaConverterEntidadeSessaoParaSessaoDto() {
-        Resultado resultado = new Resultado();
-        resultado.setIdPauta(1L);
-        resultado.setIdSessao(2L);
-        resultado.setTotalVotos(10);
-        resultado.setVotosNao(3);
-        resultado.setVotosSim(7);
-        resultado.setResultado(ResultadoEnum.FINAL);
+        ResultadoResponse resultadoResponse = new ResultadoResponse();
+        resultadoResponse.setIdPauta(1L);
+        resultadoResponse.setIdSessao(2L);
+        resultadoResponse.setTotalVotos(10);
+        resultadoResponse.setVotosNao(3);
+        resultadoResponse.setVotosSim(7);
+        resultadoResponse.setResultado(ResultadoEnum.FINAL);
 
-        ResultadoDto resultadoDto = modelMapper.map(resultado, ResultadoDto.class);
-        assertEquals(resultado.getIdPauta(), resultadoDto.getIdPauta());
-        assertEquals(resultado.getIdSessao(), resultadoDto.getIdSessao());
-        assertEquals(resultado.getVotosNao(), resultadoDto.getVotosNao());
-        assertEquals(resultado.getVotosSim(), resultadoDto.getVotosSim());
-        assertEquals(resultado.getTotalVotos(), resultadoDto.getTotalVotos());
-        assertEquals(resultado.getResultado(), resultadoDto.getResultado());
+        ResultadoDto resultadoDto = modelMapper.map(resultadoResponse, ResultadoDto.class);
+        assertEquals(resultadoResponse.getIdPauta(), resultadoDto.getIdPauta());
+        assertEquals(resultadoResponse.getIdSessao(), resultadoDto.getIdSessao());
+        assertEquals(resultadoResponse.getVotosNao(), resultadoDto.getVotosNao());
+        assertEquals(resultadoResponse.getVotosSim(), resultadoDto.getVotosSim());
+        assertEquals(resultadoResponse.getTotalVotos(), resultadoDto.getTotalVotos());
+        assertEquals(resultadoResponse.getResultado(), resultadoDto.getResultado());
     }
 
     @Test

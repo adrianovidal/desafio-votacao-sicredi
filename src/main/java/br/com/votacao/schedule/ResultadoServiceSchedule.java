@@ -5,7 +5,7 @@ import br.com.votacao.domain.Sessao;
 import br.com.votacao.service.KafkaProducer;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
-import br.com.votacao.share.Resultado;
+import br.com.votacao.share.response.ResultadoResponse;
 import br.com.votacao.share.builders.ResultadoBuild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +39,8 @@ public class ResultadoServiceSchedule {
     public void veriricarSessosFinalizadasSemResultadoEnviado() {
         List<Sessao> sessoesNaoEnviadas = sessaoService.consultarSessoesFinalizadasSemResultadoEnviaddo();
         sessoesNaoEnviadas.forEach(sessao -> {
-            Resultado resultado = resultadoService.resultado(criarResultadoParaConsulta(sessao));
-            kafkaProducer.writeMessage(toJson(resultado));
+            ResultadoResponse resultadoResponse = resultadoService.resultado(criarResultadoParaConsulta(sessao));
+            kafkaProducer.writeMessage(toJson(resultadoResponse));
             atualizarSessao(sessao);
             logger.info("*** KafkaProducer enviado...");
         });
@@ -52,7 +52,7 @@ public class ResultadoServiceSchedule {
         sessaoService.atualizar(sessao);
     }
 
-    private Resultado criarResultadoParaConsulta(Sessao sessao) {
+    private ResultadoResponse criarResultadoParaConsulta(Sessao sessao) {
         Pauta pauta = sessao.getPauta();
         return ResultadoBuild.of()
                 .comIdSessao(sessao.getSequencial())
