@@ -1,17 +1,16 @@
 package br.com.votacao.share.util;
 
-import br.com.votacao.share.response.Resultado;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 public interface JsonUtil {
 
-    static String toJson(Resultado resultado) {
+    static String toJson(Object object) {
         ObjectWriter ow = new ObjectMapper().writer();
         String mensagem = null;
         try {
-            mensagem = ow.writeValueAsString(resultado);
+            mensagem = ow.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
