@@ -2,7 +2,12 @@ package br.com.votacao.unittest;
 
 import br.com.votacao.service.impl.ResultadoServiceImplTest;
 import br.com.votacao.service.impl.SessaoServiceImplTest;
+import br.com.votacao.service.impl.VerificarCpfAssociadoServiceImplTest;
 import br.com.votacao.service.impl.VotoServiceImplTest;
+import br.com.votacao.share.dto.PautaDtoTest;
+import br.com.votacao.share.dto.ResultadoDtoTest;
+import br.com.votacao.share.dto.SessaoDtoTest;
+import br.com.votacao.share.dto.VotoDtoTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -13,7 +18,13 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         SessaoServiceImplTest.class,
         VotoServiceImplTest.class,
-        ResultadoServiceImplTest.class
+        ResultadoServiceImplTest.class,
+        VerificarCpfAssociadoServiceImplTest.class,
+
+        PautaDtoTest.class,
+        ResultadoDtoTest.class,
+        SessaoDtoTest.class,
+        VotoDtoTest.class
 })
 public class FastUnitTests {
 

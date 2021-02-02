@@ -43,7 +43,7 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     public List<Voto> consultarVotos(Sessao sessao) {
-        return null;
+        return votoRepository.findAllBySessao(sessao);
     }
 
     private void verificarAssociadoHapto(String associadoCpf) {
@@ -51,7 +51,8 @@ public class VotoServiceImpl implements VotoService {
     }
 
     private void validarVoto(Voto voto) {
-        Voto votoConsultado = this.votoRepository.findByAssociadoIdenAndSessao_Sequencial(voto.getAssociadoIden(), voto.getSessao().getSequencial());
+        Sessao sessao = voto.getSessao();
+        Voto votoConsultado = this.votoRepository.findByAssociadoIdenAndSessao_Sequencial(voto.getAssociadoIden(), sessao.getSequencial());
         if (naoEstaNulo(votoConsultado)) {
             throw new NegocioException(O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO);
         }

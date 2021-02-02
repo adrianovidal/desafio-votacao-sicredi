@@ -12,11 +12,15 @@ import br.com.votacao.service.VotoService;
 import br.com.votacao.unittest.UnitTest;
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static br.com.votacao.share.Constants.O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO;
 
@@ -37,6 +41,7 @@ public class VotoServiceImplTest extends UnitTest {
     protected Voto voto;
     protected Voto votoConsultado;
     protected Voto votoCadastrado;
+    protected List<Voto> votos;
 
     @Before
     public void inicializarContexto() {
@@ -49,6 +54,8 @@ public class VotoServiceImplTest extends UnitTest {
 
         votoConsultado = null;
         votoCadastrado = new Voto();
+
+        votos = new ArrayList<>();
     }
 
     @Test
@@ -120,6 +127,17 @@ public class VotoServiceImplTest extends UnitTest {
         contextoExcecao.expectMessage(O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO);
 
         votar();
+    }
+
+    @Test
+    public void deveriaConsultarOsVotosDaSessao() {
+        contexto.checking(new Expectations(){{
+            oneOf(votoRepositoryMock).findAllBySessao(with(same(sessao)));
+            will(returnValue(votos));
+        }});
+
+        List<Voto> votosConsultados = votoService.consultarVotos(sessao);
+        Assert.assertSame(votos, votosConsultados);
     }
 
     private void votar() {

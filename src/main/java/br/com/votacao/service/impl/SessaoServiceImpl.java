@@ -4,9 +4,9 @@ import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
-import br.com.votacao.share.Resultado;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.votacao.share.Constants.SESSAO_NAO_ENCONTRADA_OU_ENCERRADA;
@@ -40,7 +40,17 @@ public class SessaoServiceImpl implements SessaoService {
     }
 
     @Override
-    public Sessao consultar(Long idPauta, Long idSessaso) {
-        return null;
+    public Sessao consultar(Long idSessaso, Long idPauta) {
+        return sessaoRepository.findBySequencialAndPauta_Id(idSessaso, idPauta);
+    }
+
+    @Override
+    public void atualizar(Sessao sessao) {
+        sessaoRepository.save(sessao);
+    }
+
+    @Override
+    public List<Sessao> consultarSessoesFinalizadasSemResultadoEnviaddo() {
+        return sessaoRepository.consultarSessoesFinalizadasSemResultado(now());
     }
 }

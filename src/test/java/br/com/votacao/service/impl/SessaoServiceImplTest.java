@@ -32,6 +32,9 @@ public class SessaoServiceImplTest extends UnitTest {
     private Sessao sessao;
     private Sessao sessaoConsultada;
 
+    private Long idSessao;
+    private Long idPauta;
+
     private Optional<Sessao> optionalSessao;
 
     @Before
@@ -44,6 +47,9 @@ public class SessaoServiceImplTest extends UnitTest {
         sessaoConsultada = new Sessao();
         sessaoConsultada.setDuracao(ZonedDateTime.now().plusMinutes(2));
         optionalSessao = Optional.of(sessaoConsultada);
+
+        idSessao = 1L;
+        idPauta = 1L;
     }
 
     @Test
@@ -68,7 +74,7 @@ public class SessaoServiceImplTest extends UnitTest {
             will(returnValue(optionalSessao));
         }});
 
-        sessaoService.validar(sessao);
+        validar();
     }
 
     @Test
@@ -79,7 +85,31 @@ public class SessaoServiceImplTest extends UnitTest {
         contextoExcecao.expect(NegocioException.class);
         contextoExcecao.expectMessage(SESSAO_NAO_ENCONTRADA_OU_ENCERRADA);
 
+        validar();
+    }
+
+    private void validar() {
         sessaoService.validar(sessao);
+    }
+
+    @Test
+    public void deveriaConsultarSessaoPeloIdEhPeloPauta() {
+        contexto.checking(new Expectations(){{
+            oneOf(sessaoRepositoryMock).findBySequencialAndPauta_Id(with(same(idSessao)), with(same(idPauta)));
+            will(returnValue(sessao));
+        }});
+
+        Sessao sessaoConsultada = sessaoService.consultar(idSessao, idPauta);
+        assertSame(sessao, sessaoConsultada);
+    }
+
+    @Test
+    public void deveriaAtualizarSessao() {
+        contexto.checking(new Expectations(){{
+            oneOf(sessaoRepositoryMock).save(with(same(sessao)));
+        }});
+
+        sessaoService.atualizar(sessao);
     }
 
     void permitirConsultarSessao() {

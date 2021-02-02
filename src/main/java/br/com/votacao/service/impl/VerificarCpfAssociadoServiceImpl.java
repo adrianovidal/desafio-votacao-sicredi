@@ -1,5 +1,6 @@
 package br.com.votacao.service.impl;
 
+import br.com.votacao.config.UserConfig;
 import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.service.VerificarCpfAssociadoService;
 import br.com.votacao.share.StatusCpf;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import static br.com.votacao.share.Constants.ASSOCIADO_IMPOSSIBILITADO_DE_VOTAR;
 import static br.com.votacao.share.enuns.StatusPermissao.UNABLE_TO_VOTE;
 import static br.com.votacao.share.util.VerificadorUtil.estaNuloOuVazio;
-import static java.text.MessageFormat.format;
+import static java.lang.String.format;
 
 @Service
 public class VerificarCpfAssociadoServiceImpl implements VerificarCpfAssociadoService {
@@ -20,10 +21,12 @@ public class VerificarCpfAssociadoServiceImpl implements VerificarCpfAssociadoSe
     public static final String URI_VERIFICADOR_CPF = "https://user-info.herokuapp.com/users/{0}";
 
     private final RestTemplate restTemplate;
+    private final UserConfig userConfig;
 
     @Autowired
-    public VerificarCpfAssociadoServiceImpl(RestTemplate restTemplate) {
+    public VerificarCpfAssociadoServiceImpl(RestTemplate restTemplate, UserConfig userConfig) {
         this.restTemplate = restTemplate;
+        this.userConfig = userConfig;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class VerificarCpfAssociadoServiceImpl implements VerificarCpfAssociadoSe
     }
 
     private StatusCpf consultarServicoValidacaoCpf(String cpf) {
-        final String uri = format(URI_VERIFICADOR_CPF, cpf);
+        final String uri = format(this.userConfig.getUrl(), cpf);
 
         StatusCpf statusCpfResult;
 

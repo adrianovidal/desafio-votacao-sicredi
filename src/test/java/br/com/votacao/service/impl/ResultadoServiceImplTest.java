@@ -4,7 +4,6 @@ import br.com.votacao.domain.Sessao;
 import br.com.votacao.domain.Voto;
 import br.com.votacao.fixture.ResultadoFixture;
 import br.com.votacao.fixture.SessaoFixture;
-import br.com.votacao.service.KafkaProducer;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.VotoService;
@@ -26,6 +25,7 @@ import java.util.List;
 
 import static br.com.votacao.fixture.VotoFixture.umVotoNao;
 import static br.com.votacao.fixture.VotoFixture.umVotoSim;
+import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 
 public class ResultadoServiceImplTest extends UnitTest {
@@ -36,7 +36,6 @@ public class ResultadoServiceImplTest extends UnitTest {
 
     @Mock protected SessaoService sessaoServiceMock;
     @Mock protected VotoService votoServiceMock;
-    @Mock protected KafkaProducer kafkaProducerMock;
 
     protected ResultadoService resultadoService;
 
@@ -48,7 +47,7 @@ public class ResultadoServiceImplTest extends UnitTest {
 
     @Before
     public void inicializarContexto() {
-        resultadoService = new ResultadoServiceImpl(sessaoServiceMock, votoServiceMock, kafkaProducerMock);
+        resultadoService = new ResultadoServiceImpl(sessaoServiceMock, votoServiceMock);
 
         resultado = ResultadoFixture.umResultado();
         sessao = SessaoFixture.umaSessao();
@@ -72,7 +71,6 @@ public class ResultadoServiceImplTest extends UnitTest {
     @Test
     public void deveriaConsultarOsVotosDaSessao() {
         permitirConsultarSessao();
-
         contexto.checking(new Expectations(){{
             oneOf(votoServiceMock).consultarVotos(with(same(sessao)));
             will(returnValue(votos));
@@ -87,21 +85,14 @@ public class ResultadoServiceImplTest extends UnitTest {
         permitirConsultarVotosDaSessao();
 
         Resultado resultadoConsultado = consultarResultado();
-        Assert.assertEquals(votos.size(), resultadoConsultado.getTotalVotos());
-        Assert.assertEquals(3, resultadoConsultado.getVotoSim());
-        Assert.assertEquals(2, resultadoConsultado.getVotosNao());
+        Assert.assertEquals(converterInt(""+ votos.size()), resultadoConsultado.getTotalVotos());
+        Assert.assertEquals(converterInt("3"), resultadoConsultado.getVotosSim());
+        Assert.assertEquals(converterInt("2"), resultadoConsultado.getVotosNao());
+        Assert.assertEquals(converterInt("5"), resultadoConsultado.getTotalVotos());
     }
 
-    @Test
-    public void deveriaEnviarResultadoParaOhKafkaProducer() {
-        permitirConsultarSessao();
-        permitirConsultarVotosDaSessao();
-
-        contexto.checking(new Expectations(){{
-            oneOf(kafkaProducerMock).writeMessage(with(equal(mensagem)));
-        }});
-
-        consultarResultado();
+    private Integer converterInt(String valor) {
+        return parseInt(valor);
     }
 
     private Resultado consultarResultado() {

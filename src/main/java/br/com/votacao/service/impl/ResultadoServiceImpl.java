@@ -2,14 +2,11 @@ package br.com.votacao.service.impl;
 
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.domain.Voto;
-import br.com.votacao.service.KafkaProducer;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.VotoService;
 import br.com.votacao.share.Resultado;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import br.com.votacao.share.builders.ResultadoBuild;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,45 +20,30 @@ public class ResultadoServiceImpl implements ResultadoService {
 
     private final SessaoService sessaoService;
     private final VotoService votoService;
-    private final KafkaProducer kafkaProducer;
 
-    public ResultadoServiceImpl(SessaoService sessaoService, VotoService votoService, KafkaProducer kafkaProducer) {
+    public ResultadoServiceImpl(SessaoService sessaoService, VotoService votoService) {
         this.sessaoService = sessaoService;
         this.votoService = votoService;
-        this.kafkaProducer = kafkaProducer;
     }
 
     @Override
     public Resultado resultado(Resultado resultado) {
         Sessao sessao = this.sessaoService.consultar(resultado.getIdPauta(), resultado.getIdSessao());
+
         List<Voto> votos = this.votoService.consultarVotos(sessao);
 
-        Resultado resultadoFinal = computarResultado(resultado, votos);
-
-        this.kafkaProducer.writeMessage(obterResultadoJson(resultadoFinal));
-
-        return resultadoFinal;
+        return computarResultado(resultado, sessao, votos);
     }
 
-    private String obterResultadoJson(Resultado resultado) {
-        ObjectWriter ow = new ObjectMapper().writer();
-        String mensagem = null;
-        try {
-            mensagem = ow.writeValueAsString(resultado);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return mensagem;
-    }
-
-    private Resultado computarResultado(Resultado resultado, List<Voto> votos) {
-        Resultado resultadoFinal = new Resultado();
-        resultadoFinal.setIdPauta(resultado.getIdPauta());
-        resultadoFinal.setIdSessao(resultado.getIdSessao());
-        resultadoFinal.setTotalVotos(votos.size());
-        resultadoFinal.setVotoSim(obterVotosPorTipo(votos, SIM.getDescricao()));
-        resultadoFinal.setVotosNao(obterVotosPorTipo(votos, NAO.getDescricao()));
-        return resultadoFinal;
+    private Resultado computarResultado(Resultado resultado, Sessao sessao, List<Voto> votos) {
+        return ResultadoBuild.of()
+                .comTotalVotos(votos.size())
+                .comIdPauta(resultado.getIdPauta())
+                .comIdSessao(resultado.getIdSessao())
+                .comResultado(sessao.obterTipoResultado())
+                .comVotosSim(obterVotosPorTipo(votos, SIM.getDescricao()))
+                .comVotosNao(obterVotosPorTipo(votos, NAO.getDescricao()))
+                .build();
     }
 
     private Integer obterVotosPorTipo(List<Voto> votos, String opcaoVoto) {

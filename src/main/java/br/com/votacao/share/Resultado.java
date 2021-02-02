@@ -1,12 +1,15 @@
 package br.com.votacao.share;
 
+import br.com.votacao.share.enuns.ResultadoEnum;
+
 public class Resultado {
 
     private Long idPauta;
     private Long idSessao;
-    private int totalVotos;
-    private int votoSim;
-    private int votosNao;
+    private Integer totalVotos;
+    private Integer votosSim;
+    private Integer votosNao;
+    private ResultadoEnum resultado;
 
     public Long getIdPauta() {
         return idPauta;
@@ -24,27 +27,35 @@ public class Resultado {
         this.idSessao = idSessao;
     }
 
-    public int getTotalVotos() {
+    public Integer getTotalVotos() {
         return totalVotos;
     }
 
-    public void setTotalVotos(int totalVotos) {
+    public void setTotalVotos(Integer totalVotos) {
         this.totalVotos = totalVotos;
     }
 
-    public int getVotoSim() {
-        return votoSim;
+    public Integer getVotosSim() {
+        return votosSim;
     }
 
-    public void setVotoSim(int votoSim) {
-        this.votoSim = votoSim;
+    public void setVotosSim(Integer votosSim) {
+        this.votosSim = votosSim;
     }
 
-    public int getVotosNao() {
+    public Integer getVotosNao() {
         return votosNao;
     }
 
-    public void setVotosNao(int votosNao) {
+    public void setVotosNao(Integer votosNao) {
         this.votosNao = votosNao;
+    }
+
+    public ResultadoEnum getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(ResultadoEnum resultado) {
+        this.resultado = resultado;
     }
 }

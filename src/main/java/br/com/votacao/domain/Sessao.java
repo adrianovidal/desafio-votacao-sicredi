@@ -1,9 +1,13 @@
 package br.com.votacao.domain;
 
+import br.com.votacao.share.enuns.ResultadoEnum;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import static br.com.votacao.share.enuns.ResultadoEnum.FINAL;
+import static br.com.votacao.share.enuns.ResultadoEnum.PARCIAL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "SESSAO")
@@ -19,6 +23,7 @@ public class Sessao {
 
     private ZonedDateTime duracao;
 
+    @Column(columnDefinition = "boolean default false")
     private boolean enviadoKafka;
 
     public Long getSequencial() {
@@ -64,5 +69,9 @@ public class Sessao {
     @Override
     public int hashCode() {
         return Objects.hash(sequencial);
+    }
+
+    public ResultadoEnum obterTipoResultado() {
+        return ZonedDateTime.now().isBefore(duracao) ?  PARCIAL : FINAL;
     }
 }

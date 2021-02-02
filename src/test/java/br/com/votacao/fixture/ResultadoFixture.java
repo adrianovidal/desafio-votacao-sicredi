@@ -13,7 +13,7 @@ public class ResultadoFixture {
 
     public static Resultado umResultadoFinal() {
         Resultado resultado = umResultado();
-        resultado.setVotoSim(3);
+        resultado.setVotosSim(3);
         resultado.setVotosNao(2);
         resultado.setTotalVotos(5);
         return resultado;

@@ -1,5 +1,7 @@
 package br.com.votacao.share.dto;
 
+import br.com.votacao.share.enuns.ResultadoEnum;
+
 public class ResultadoDto {
 
     private Long idPauta;
@@ -7,6 +9,7 @@ public class ResultadoDto {
     private Integer votosSim;
     private Integer votosNao;
     private Integer totalVotos;
+    private ResultadoEnum resultado;
 
     public Long getIdPauta() {
         return idPauta;
@@ -46,5 +49,13 @@ public class ResultadoDto {
 
     public void setTotalVotos(Integer totalVotos) {
         this.totalVotos = totalVotos;
+    }
+
+    public ResultadoEnum getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(ResultadoEnum resultado) {
+        this.resultado = resultado;
     }
 }

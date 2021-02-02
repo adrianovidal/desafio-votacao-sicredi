@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class VotoDtoTest {
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Test
     public void deveriaConverterEntidadeVotoParaVotoDto() {

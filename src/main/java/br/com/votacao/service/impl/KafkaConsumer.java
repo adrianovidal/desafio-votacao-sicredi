@@ -12,6 +12,6 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "my_topic", groupId = "my_group_id")
     public void getMessage(String message) {
-        logger.info(String.format("*** Resultado da Votação -> '%s'", message));
+        logger.info(String.format("*** Resultado da Votação -> %s", message));
     }
 }

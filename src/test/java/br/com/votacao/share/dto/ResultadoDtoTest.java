@@ -1,33 +1,41 @@
 package br.com.votacao.share.dto;
 
-import br.com.votacao.domain.Pauta;
 import br.com.votacao.domain.Sessao;
+import br.com.votacao.share.Resultado;
 import br.com.votacao.share.converter.DateStringConverter;
 import br.com.votacao.share.converter.StringDateConverter;
+import br.com.votacao.share.enuns.ResultadoEnum;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 import static java.lang.Long.parseLong;
 import static java.time.ZonedDateTime.now;
 import static org.junit.Assert.assertEquals;
 
-public class SessaoDtoTest {
+public class ResultadoDtoTest {
 
     private final ModelMapper modelMapper =  modelMapper();
 
     @Test
     public void deveriaConverterEntidadeSessaoParaSessaoDto() {
-        Sessao sessao = new Sessao();
-        sessao.setSequencial(1L);
-        sessao.setDuracao(now());
-        sessao.setPauta(new Pauta() {{ setId(2L); setNome("Licitação"); }});
+        Resultado resultado = new Resultado();
+        resultado.setIdPauta(1L);
+        resultado.setIdSessao(2L);
+        resultado.setTotalVotos(10);
+        resultado.setVotosNao(3);
+        resultado.setVotosSim(7);
+        resultado.setResultado(ResultadoEnum.FINAL);
 
-        SessaoDto sessaoDto = modelMapper.map(sessao, SessaoDto.class);
-        assertEquals(sessao.getSequencial(), sessaoDto.getSequencial());
-        assertEquals(sessao.getDuracao().toString(), sessaoDto.getDuracao());
-        assertEquals(sessao.getPauta().getId(), sessaoDto.getPautaId());
+        ResultadoDto resultadoDto = modelMapper.map(resultado, ResultadoDto.class);
+        assertEquals(resultado.getIdPauta(), resultadoDto.getIdPauta());
+        assertEquals(resultado.getIdSessao(), resultadoDto.getIdSessao());
+        assertEquals(resultado.getVotosNao(), resultadoDto.getVotosNao());
+        assertEquals(resultado.getVotosSim(), resultadoDto.getVotosSim());
+        assertEquals(resultado.getTotalVotos(), resultadoDto.getTotalVotos());
+        assertEquals(resultado.getResultado(), resultadoDto.getResultado());
     }
 
     @Test
@@ -39,12 +47,12 @@ public class SessaoDtoTest {
 
         Sessao sessao = modelMapper.map(sessaoDto, Sessao.class);
         assertEquals(sessaoDto.getSequencial(), sessao.getSequencial());
-        assertEquals(obterDuracao(sessaoDto), sessao.getDuracao());
+        assertEquals(obterDuracao(sessaoDto), Date.from(sessao.getDuracao().toInstant()).toString());
         assertEquals(sessaoDto.getPautaId(), sessao.getPauta().getId());
     }
 
-    private ZonedDateTime obterDuracao(SessaoDto sessaoDto) {
-        return now().plusMinutes(parseLong(sessaoDto.getDuracao()));
+    private String obterDuracao(SessaoDto sessaoDto) {
+        return Date.from(now().plusMinutes(parseLong(sessaoDto.getDuracao())).toInstant()).toString();
     }
 
     public ModelMapper modelMapper() {

@@ -16,10 +16,10 @@ public class Voto {
     private String voto;
 
     @ManyToOne
-    @JoinColumn(name = "idSessao", unique = true)
+    @JoinColumn(name = "idSessao")
     private Sessao sessao;
 
-    @Column(name = "idAssociado", unique = true)
+    @Column(name = "idAssociado")
     private Long associadoIden;
 
     @Column(name = "cpfAssociado")
