@@ -22,7 +22,7 @@ public class SessaoController {
 		this.modelMapper = modelMapper;
 	}
 
-	@PostMapping(value = "/sessao")
+	@PostMapping(value = "/sessao", produces="application/json")
 	public SessaoDto save(@RequestBody SessaoDto sessaoDto) {
 		Sessao sessao = converterEmEntity(sessaoDto);
 		Sessao sessaoCriada = sessaoService.cadastrar(sessao);

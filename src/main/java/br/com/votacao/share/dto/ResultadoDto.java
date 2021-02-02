@@ -1,14 +1,26 @@
 package br.com.votacao.share.dto;
 
 import br.com.votacao.share.enuns.ResultadoEnum;
+import io.swagger.annotations.ApiModelProperty;
 
 public class ResultadoDto {
 
+    @ApiModelProperty(notes = "Identificação da pauta", required = true, name="idPauta")
     private Long idPauta;
+
+    @ApiModelProperty(notes = "Identificação da Sessão", required = true, name="idSessao")
     private Long idSessao;
+
+    @ApiModelProperty(hidden = true)
     private Integer votosSim;
+
+    @ApiModelProperty(hidden = true)
     private Integer votosNao;
+
+    @ApiModelProperty(hidden = true)
     private Integer totalVotos;
+
+    @ApiModelProperty(hidden = true)
     private ResultadoEnum resultado;
 
     public Long getIdPauta() {

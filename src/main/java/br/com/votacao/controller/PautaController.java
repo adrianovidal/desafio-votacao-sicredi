@@ -22,7 +22,7 @@ public class PautaController {
 		this.modelMapper = modelMapper;
 	}
 
-	@PostMapping(value = "/pauta")
+	@PostMapping(value = "/pauta", produces="application/json")
 	public PautaDto save(@RequestParam("nome") String nome) {
 		Pauta pauta = pautaRepository.save(criarPauta(nome));
 		return convertToDto(pauta);

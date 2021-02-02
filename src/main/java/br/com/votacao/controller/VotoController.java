@@ -21,7 +21,7 @@ public class VotoController {
 		this.modelMapper = modelMapper;
 	}
 
-	@PostMapping(value = "/votar")
+	@PostMapping(value = "/votar", produces="application/json")
 	public void save(@RequestBody VotoDto votoDto) {
 		Voto voto = convertToEntity(votoDto);
 		votoService.votar(voto);

@@ -1,10 +1,19 @@
 package br.com.votacao.share.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class VotoDto {
 
+    @ApiModelProperty(notes = "Voto (Sim, Não)", required = true, name="voto")
     private String voto;
+
+    @ApiModelProperty(notes = "Identificação da sessão", required = true, name="sessaoSequencial")
     private Long sessaoSequencial;
+
+    @ApiModelProperty(notes = "Identificação do associado", required = true, name="associadoIden")
     private Long associadoIden;
+
+    @ApiModelProperty(notes = "CPF do associado", required = true, name="associadoCpf")
     private String associadoCpf;
 
     public String getVoto() {

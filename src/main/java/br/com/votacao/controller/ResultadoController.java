@@ -21,7 +21,7 @@ public class ResultadoController {
 		this.modelMapper = modelMapper;
 	}
 
-	@PostMapping(value = "/resultado")
+	@PostMapping(value = "/resultado", produces="application/json")
 	public ResultadoDto save(@RequestBody ResultadoDto resultadoDto) {
 		Resultado resultado = converterEmEntity(resultadoDto);
 		Resultado resultadoFinal = this.resultadoService.resultado(resultado);

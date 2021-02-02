@@ -1,8 +1,13 @@
 package br.com.votacao.share.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class PautaDto {
 
+    @ApiModelProperty(hidden = true)
     private Long id;
+
+    @ApiModelProperty(notes = "Nome da pauta", required = true, name="nome")
     private String nome;
 
     public Long getId() {

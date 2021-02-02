@@ -1,9 +1,16 @@
 package br.com.votacao.share.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class SessaoDto {
 
+    @ApiModelProperty(notes = "sequencial", name="sequencial", hidden = true)
     private Long sequencial;
+
+    @ApiModelProperty(notes = "sequencial da pauta", name="pautaId", required=true)
     private Long pautaId;
+
+    @ApiModelProperty(notes = "duração da sessão", name="duracao", required=true)
     private String duracao;
 
     public Long getSequencial() {
