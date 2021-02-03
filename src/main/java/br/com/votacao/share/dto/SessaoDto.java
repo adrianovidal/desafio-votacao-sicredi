@@ -10,7 +10,7 @@ public class SessaoDto {
     @ApiModelProperty(notes = "sequencial da pauta", name="pautaId", required=true)
     private Long pautaId;
 
-    @ApiModelProperty(notes = "duração da sessão", name="duracao", required=true)
+    @ApiModelProperty(notes = "duração da sessão em minutos", name="duracao", required=true)
     private String duracao;
 
     public Long getSequencial() {

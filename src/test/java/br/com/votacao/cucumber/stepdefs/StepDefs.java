@@ -2,8 +2,10 @@ package br.com.votacao.cucumber.stepdefs;
 
 import br.com.votacao.VotacaoApplication;
 import br.com.votacao.VotacaoApplicationTests;
+import br.com.votacao.domain.Pauta;
 import br.com.votacao.share.dto.PautaDto;
 import br.com.votacao.share.dto.SessaoDto;
+import br.com.votacao.share.dto.VotoDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,10 +30,15 @@ public abstract class StepDefs {
     @Autowired
     private MockMvc mockMvc;
 
+    public PautaDto pautaDto;
+    public SessaoDto sessaoDto;
+
     public ResultActions actions;
 
     private String URI_PAUTA_CONTROLLER = "/api/pauta";
     private String URI_SESSAO_CONTROLLER = "/api/sessao";
+    private String URI_VOTO_CONTROLLER = "/api/votar";
+    private String URI_RESULTADO_CONTROLLER = "/api/resultado";
 
     public ResultActions listarTodas() throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.get(URI_PAUTA_CONTROLLER)
@@ -51,6 +58,13 @@ public abstract class StepDefs {
     public ResultActions cadastrarSessao(SessaoDto sessaoDto) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.post(URI_SESSAO_CONTROLLER)
                 .content(new ObjectMapper().writeValueAsString(sessaoDto))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    public ResultActions cadastrarVoto(VotoDto votoDto) throws Exception {
+        return mockMvc.perform(MockMvcRequestBuilders.post(URI_VOTO_CONTROLLER)
+                .content(new ObjectMapper().writeValueAsString(votoDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8));
     }

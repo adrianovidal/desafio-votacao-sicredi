@@ -13,10 +13,10 @@ import static org.junit.Assert.assertTrue;
 
 public class SessaoVerificador {
 
-    public static void verificarPautaCadastrada(SessaoDto sessaoDtoRetornada, List<SessaoDataTable> sessaoDataTables) {
+    public static void verificarPautaCadastrada(List<SessaoDataTable> sessaoDataTables, SessaoDto sessaoDtoRetornada) {
         sessaoDataTables.forEach(sessaoDT -> {
-            assertEquals(sessaoDtoRetornada.getSequencial(), sessaoDT.getId());
-            assertEquals(sessaoDtoRetornada.getPautaId(), sessaoDT.getIdPauta());
+            assertEquals(sessaoDT.getId(), sessaoDtoRetornada.getSequencial());
+            assertEquals(sessaoDT.getIdPauta(), sessaoDtoRetornada.getPautaId());
             assertTrue(validarTempoDeDuracaoDaSessao(sessaoDT.getDuracao(), sessaoDT.getDuracao(), sessaoDtoRetornada.getDuracao()));
         });
     }

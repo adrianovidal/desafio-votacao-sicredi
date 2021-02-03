@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PautaVerificador {
 
-    public static void verificarPautaCadastrada(Pauta pautaRetornado, List<PautaDataTable> pautaDataTables) {
+    public static void verificarPautaCadastrada(List<PautaDataTable> pautaDataTables, Pauta pautaRetornado) {
         pautaDataTables.forEach(pautaDT -> {
             assertEquals(pautaRetornado.getId(), pautaDT.getId());
             assertEquals(pautaRetornado.getNome(), pautaDT.getNome());

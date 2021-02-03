@@ -27,6 +27,6 @@ public class PautaStepDefs extends StepDefs {
 
     @Então("^Retornar a seguine pauta cadastrada$")
     public void retornarASeguinePautaCadastrada(List<PautaDataTable> pautaDataTables) {
-        verificarPautaCadastrada(obterObjetoRetornado(Pauta.class), pautaDataTables);
+        verificarPautaCadastrada(pautaDataTables, obterObjetoRetornado(Pauta.class));
     }
 }
