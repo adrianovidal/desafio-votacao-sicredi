@@ -14,21 +14,6 @@ pipeline {
         sleep 30
     }
 
-    stage('Integration tests') {
-        steps {
-            script {
-                def mvnHome = tool 'Maven 3.5.2'
-                if (isUnix()) {
-                    sh "'${mvnHome}/bin/mvn'  verify -Dunit-tests.skip=true"
-                } else {
-                    bat(/"${mvnHome}\bin\mvn" verify -Dunit-tests.skip=true/)
-                }
-
-            }
-            cucumber buildStatus: null, fileIncludePattern: '**/cucumber.json', jsonReportDirectory: 'target', sortingMethod: 'ALPHABETICAL'
-        }
-    }
-
     stage('packaging') {
         sh "mvn deploy -Pprod -DskipTests=true -DskipLiquibase=true"
     }
