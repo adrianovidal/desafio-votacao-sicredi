@@ -1,10 +1,10 @@
 package br.com.votacao.cucumber.stepdefs.voto;
 
+import br.com.votacao.controller.errors.Problem;
 import br.com.votacao.cucumber.stepdefs.StepDefs;
 import br.com.votacao.cucumber.stepdefs.datatable.VotoDataTable;
 import br.com.votacao.share.dto.SessaoDto;
 import br.com.votacao.share.dto.VotoDto;
-import br.com.votacao.share.response.VotoResponse;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -31,8 +31,8 @@ public class VotoStepDefs extends StepDefs {
         return sessaoDto;
     }
 
-    @E("^que foi informado o seguinte voto$")
-    public void queFoiInformadoOSeguinteVoto(List<VotoDataTable> votoDataTables) {
+    @E("^que foi informado os seguintes votos$")
+    public void queFoiInformadoOsSeguintesVotos(List<VotoDataTable> votoDataTables) {
         this.votoDataTables = votoDataTables;
     }
 
@@ -40,6 +40,7 @@ public class VotoStepDefs extends StepDefs {
         VotoDto votoDto = new VotoDto();
         votoDto.setVoto(votoDT.getVoto());
         votoDto.setAssociadoIden(votoDT.getIdAssociado());
+        votoDto.setAssociadoCpf(votoDT.getCpfAssociado());
         votoDto.setSessaoSequencial(sessaoDto.getSequencial());
         return votoDto;
     }
@@ -51,6 +52,19 @@ public class VotoStepDefs extends StepDefs {
 
     @Então("^Retornar o seguinte mensasgem \"([^\"]*)\"$")
     public void retornarOSeguinteMensasgem(String mensagem) {
-        verificarPautaCadastrada(mensagem, obterObjetoRetornado(VotoResponse.class).getMessage());
+        verificarPautaCadastrada(mensagem, obterObjetoRetornado(Problem.class).getMessage());
+    }
+
+    @E("^que esista na base os seguintes votos$")
+    public void queEsistaNaBaseOsSeguintesVotos(List<VotoDataTable> votoDataTables) {
+        votoDataTables.forEach(this::votar);
+    }
+
+    private void votar(VotoDataTable votoDataTable) {
+        try {
+            cadastrarVoto(criarVoto(votoDataTable));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

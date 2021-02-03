@@ -4,6 +4,7 @@ import br.com.votacao.VotacaoApplication;
 import br.com.votacao.VotacaoApplicationTests;
 import br.com.votacao.domain.Pauta;
 import br.com.votacao.share.dto.PautaDto;
+import br.com.votacao.share.dto.ResultadoDto;
 import br.com.votacao.share.dto.SessaoDto;
 import br.com.votacao.share.dto.VotoDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +66,13 @@ public abstract class StepDefs {
     public ResultActions cadastrarVoto(VotoDto votoDto) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.post(URI_VOTO_CONTROLLER)
                 .content(new ObjectMapper().writeValueAsString(votoDto))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    public ResultActions obterResultado(ResultadoDto resultadoDto) throws Exception {
+        return mockMvc.perform(MockMvcRequestBuilders.post(URI_RESULTADO_CONTROLLER)
+                .content(new ObjectMapper().writeValueAsString(resultadoDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8));
     }
