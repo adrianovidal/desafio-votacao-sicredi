@@ -16,7 +16,6 @@ import org.jmock.auto.Mock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.modelmapper.ModelMapper;
 
 import static java.util.Date.from;
@@ -43,13 +42,13 @@ public class SessaoControllerTest extends UnitTest {
         sessaoDto = new SessaoDto();
         sessaoDto.setDuracao("1");
         sessaoDto.setPautaId(1L);
-        sessaoDto.setSequencial(1L);
+        sessaoDto.setId(1L);
 
         sessao = SessaoFixture.umaSessao();
         sessao.setPauta(PautaFixture.umaPauta());
 
         sessaoConsultada = new Sessao();
-        sessaoConsultada.setSequencial(1L);
+        sessaoConsultada.setId(1L);
     }
 
     @Test
@@ -67,7 +66,7 @@ public class SessaoControllerTest extends UnitTest {
         permitirCadastrarSessao();
 
         SessaoDto sessaoCadastradad = cadastrar();
-        Assert.assertEquals(sessao.getSequencial(), sessaoCadastradad.getSequencial());
+        Assert.assertEquals(sessao.getId(), sessaoCadastradad.getId());
     }
 
     private SessaoDto cadastrar() {
@@ -86,7 +85,7 @@ public class SessaoControllerTest extends UnitTest {
             @Override
             public boolean matchesSafely(Sessao objectToTest) {
                 return from(objectToTest.getDuracao().toInstant()).toString().equals(from(sessao.getDuracao().toInstant()).toString())
-                        && objectToTest.getSequencial().equals(sessao.getSequencial())
+                        && objectToTest.getId().equals(sessao.getId())
                         && objectToTest.getPauta().getId().equals(sessao.getPauta().getId());
             }
 

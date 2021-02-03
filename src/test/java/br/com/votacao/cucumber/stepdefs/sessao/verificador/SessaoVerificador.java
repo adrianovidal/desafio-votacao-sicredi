@@ -15,7 +15,7 @@ public class SessaoVerificador {
 
     public static void verificarPautaCadastrada(List<SessaoDataTable> sessaoDataTables, SessaoDto sessaoDtoRetornada) {
         sessaoDataTables.forEach(sessaoDT -> {
-            assertEquals(sessaoDT.getId(), sessaoDtoRetornada.getSequencial());
+            assertEquals(sessaoDT.getId(), sessaoDtoRetornada.getId());
             assertEquals(sessaoDT.getIdPauta(), sessaoDtoRetornada.getPautaId());
             assertTrue(validarTempoDeDuracaoDaSessao(sessaoDT.getDuracao(), sessaoDT.getDuracao(), sessaoDtoRetornada.getDuracao()));
         });

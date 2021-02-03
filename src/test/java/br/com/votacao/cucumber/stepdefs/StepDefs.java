@@ -2,22 +2,18 @@ package br.com.votacao.cucumber.stepdefs;
 
 import br.com.votacao.VotacaoApplication;
 import br.com.votacao.VotacaoApplicationTests;
-import br.com.votacao.domain.Pauta;
 import br.com.votacao.share.dto.PautaDto;
-import br.com.votacao.share.dto.ResultadoDto;
 import br.com.votacao.share.dto.SessaoDto;
-import br.com.votacao.share.dto.VotoDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import static br.com.votacao.share.ConstantsTests.MAPPER;
 import static br.com.votacao.share.ConstantsTests.TYPE_FACTORY;
@@ -28,54 +24,10 @@ import static br.com.votacao.share.ConstantsTests.TYPE_FACTORY;
 @ContextConfiguration(classes = {VotacaoApplication.class, VotacaoApplicationTests.class})
 public abstract class StepDefs {
 
-    @Autowired
-    private MockMvc mockMvc;
-
     public PautaDto pautaDto;
     public SessaoDto sessaoDto;
 
     public ResultActions actions;
-
-    private String URI_PAUTA_CONTROLLER = "/api/pauta";
-    private String URI_SESSAO_CONTROLLER = "/api/sessao";
-    private String URI_VOTO_CONTROLLER = "/api/votar";
-    private String URI_RESULTADO_CONTROLLER = "/api/resultado";
-
-    public ResultActions listarTodas() throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.get(URI_PAUTA_CONTROLLER)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-    }
-
-    public ResultActions cadastrarPauta(String nome) throws Exception {
-        PautaDto pautaDto = new PautaDto() {{ setNome(nome); }};
-
-        return mockMvc.perform(MockMvcRequestBuilders.post(URI_PAUTA_CONTROLLER)
-                .content(new ObjectMapper().writeValueAsString(pautaDto))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    public ResultActions cadastrarSessao(SessaoDto sessaoDto) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.post(URI_SESSAO_CONTROLLER)
-                .content(new ObjectMapper().writeValueAsString(sessaoDto))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    public ResultActions cadastrarVoto(VotoDto votoDto) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.post(URI_VOTO_CONTROLLER)
-                .content(new ObjectMapper().writeValueAsString(votoDto))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    public ResultActions obterResultado(ResultadoDto resultadoDto) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.post(URI_RESULTADO_CONTROLLER)
-                .content(new ObjectMapper().writeValueAsString(resultadoDto))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8));
-    }
 
     protected <T> T obterObjetoRetornado(Class<T> clazz) {
         try {
@@ -96,5 +48,23 @@ public abstract class StepDefs {
 
     private MockHttpServletResponse obterResposta() {
         return actions.andReturn().getResponse();
+    }
+
+    public void limparBanco() {
+        String[] tabelas = {"VOTO", "SESSAO", "PAUTA"};
+        String[] colunas = {"id", "sequencial", "id"};
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:h2:mem:votacao_db_teste", "sa", "sa");
+
+            int index = 0;
+            for (String tabela : tabelas) {
+                conn.createStatement().execute(String.format("DELETE FROM %s", tabelas[index]));
+                conn.createStatement().execute(String.format("ALTER TABLE %s ALTER COLUMN id RESTART WITH 1", tabelas[index]));
+            }
+
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

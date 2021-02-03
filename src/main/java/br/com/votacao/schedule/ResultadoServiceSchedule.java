@@ -55,7 +55,7 @@ public class ResultadoServiceSchedule {
     private Resultado criarResultadoParaConsulta(Sessao sessao) {
         Pauta pauta = sessao.getPauta();
         return ResultadoBuild.of()
-                .comIdSessao(sessao.getSequencial())
+                .comIdSessao(sessao.getId())
                 .comIdPauta(pauta.getId()).build();
     }
 }

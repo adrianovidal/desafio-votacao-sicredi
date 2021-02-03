@@ -21,12 +21,12 @@ public class SessaoDtoTest {
     @Test
     public void deveriaConverterEntidadeSessaoParaSessaoDto() {
         Sessao sessao = new Sessao();
-        sessao.setSequencial(1L);
+        sessao.setId(1L);
         sessao.setDuracao(now());
         sessao.setPauta(new Pauta() {{ setId(2L); setNome("Licitação"); }});
 
         SessaoDto sessaoDto = modelMapper.map(sessao, SessaoDto.class);
-        assertEquals(sessao.getSequencial(), sessaoDto.getSequencial());
+        assertEquals(sessao.getId(), sessaoDto.getId());
         assertEquals(sessao.getDuracao().toString(), sessaoDto.getDuracao());
         assertEquals(sessao.getPauta().getId(), sessaoDto.getPautaId());
     }
@@ -34,12 +34,12 @@ public class SessaoDtoTest {
     @Test
     public void deveriaConverterSessaoDtoParaEntidadeSessao() {
         SessaoDto sessaoDto = new SessaoDto();
-        sessaoDto.setSequencial(1L);
+        sessaoDto.setId(1L);
         sessaoDto.setDuracao("2");
         sessaoDto.setPautaId(2L);
 
         Sessao sessao = modelMapper.map(sessaoDto, Sessao.class);
-        assertEquals(sessaoDto.getSequencial(), sessao.getSequencial());
+        assertEquals(sessaoDto.getId(), sessao.getId());
         assertEquals(obterDuracao(sessaoDto), from(sessao.getDuracao().toInstant()).toString());
         assertEquals(sessaoDto.getPautaId(), sessao.getPauta().getId());
     }

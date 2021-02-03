@@ -29,7 +29,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Override
     public void validar(Sessao sessao) {
-        Optional<Sessao> sessaoConsultada = this.sessaoRepository.findById(sessao.getSequencial());
+        Optional<Sessao> sessaoConsultada = this.sessaoRepository.findById(sessao.getId());
         validarSessaoAberta(sessaoConsultada.orElse(null));
     }
 
@@ -55,7 +55,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Override
     public Sessao consultar(Long idSessaso, Long idPauta) {
-        return sessaoRepository.findBySequencialAndPauta_Id(idSessaso, idPauta);
+        return sessaoRepository.findByIdAndPauta_Id(idSessaso, idPauta);
     }
 
     @Override

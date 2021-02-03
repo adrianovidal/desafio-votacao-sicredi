@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface VotoRepository extends CrudRepository<Voto, Long> {
 
-    Voto findByAssociadoIdenAndSessao_Sequencial(Long associadoIden, Long sequencial);
+    Voto findByAssociadoIdenAndSessao_id(Long associadoIden, Long sequencial);
 
     List<Voto> findAllBySessao(Sessao sessao);
 }

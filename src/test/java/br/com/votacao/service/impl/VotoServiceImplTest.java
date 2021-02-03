@@ -96,8 +96,8 @@ public class VotoServiceImplTest extends UnitTest {
         permitirValidarSesscao();
 
         contexto.checking(new Expectations(){{
-            oneOf(votoRepositoryMock).findByAssociadoIdenAndSessao_Sequencial(with(same(voto.getAssociadoIden())),
-                    with(same(voto.getSessao().getSequencial())));
+            oneOf(votoRepositoryMock).findByAssociadoIdenAndSessao_id(with(same(voto.getAssociadoIden())),
+                    with(same(voto.getSessao().getId())));
             will(returnValue(votoConsultado));
         }});
 
@@ -149,7 +149,7 @@ public class VotoServiceImplTest extends UnitTest {
 
     void permitirConsultarVoto() {
         contexto.checking(new Expectations() {{
-            allowing(votoRepositoryMock).findByAssociadoIdenAndSessao_Sequencial(with(any(Long.class)), with(any(Long.class)));
+            allowing(votoRepositoryMock).findByAssociadoIdenAndSessao_id(with(any(Long.class)), with(any(Long.class)));
             will(returnValue(votoConsultado));
         }});
     }

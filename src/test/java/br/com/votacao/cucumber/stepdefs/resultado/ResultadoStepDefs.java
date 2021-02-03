@@ -2,10 +2,12 @@ package br.com.votacao.cucumber.stepdefs.resultado;
 
 import br.com.votacao.cucumber.stepdefs.StepDefs;
 import br.com.votacao.cucumber.stepdefs.datatable.ResultadoDataTable;
-import br.com.votacao.cucumber.stepdefs.resultado.verificador.ResultadoVerificador;
+import br.com.votacao.cucumber.stepdefs.resultado.chamadadireta.ResultadoChamadaDireta;
 import br.com.votacao.share.dto.ResultadoDto;
+import cucumber.api.java.Before;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -13,9 +15,17 @@ import static br.com.votacao.cucumber.stepdefs.resultado.verificador.ResultadoVe
 
 public class ResultadoStepDefs extends StepDefs {
 
+    @Autowired
+    ResultadoChamadaDireta resultadoChamadaDireta;
+
+    @Before("@resultado_consulta")
+    public void iniciarContexto() {
+        limparBanco();
+    }
+
     @Quando("^solicitar o resultado de uma Assembleia$")
     public void solicitarOResultadoDeUmaAssembleia() throws Exception {
-        actions = obterResultado(criarResultado());
+        actions = resultadoChamadaDireta.obterResultado(criarResultado());
     }
 
     private ResultadoDto criarResultado() {

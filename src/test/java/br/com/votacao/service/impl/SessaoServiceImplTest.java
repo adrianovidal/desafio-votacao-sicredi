@@ -112,7 +112,7 @@ public class SessaoServiceImplTest extends UnitTest {
     @Test
     public void deveriaConsultarSessao() {
         contexto.checking(new Expectations(){{
-            oneOf(sessaoRepositoryMock).findById(with(equal(sessao.getSequencial())));
+            oneOf(sessaoRepositoryMock).findById(with(equal(sessao.getId())));
             will(returnValue(optionalSessao));
         }});
 
@@ -148,7 +148,7 @@ public class SessaoServiceImplTest extends UnitTest {
     @Test
     public void deveriaConsultarSessaoPeloIdEhPeloPauta() {
         contexto.checking(new Expectations(){{
-            oneOf(sessaoRepositoryMock).findBySequencialAndPauta_Id(with(same(idSessao)), with(same(idPauta)));
+            oneOf(sessaoRepositoryMock).findByIdAndPauta_Id(with(same(idSessao)), with(same(idPauta)));
             will(returnValue(sessao));
         }});
 

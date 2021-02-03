@@ -8,7 +8,7 @@ public class SessaoFixture {
 
     public static Sessao umaSessao() {
         Sessao sessao = new Sessao();
-        sessao.setSequencial(1L);
+        sessao.setId(1L);
         sessao.setEnviadoKafka(false);
         sessao.setDuracao(ZonedDateTime.now().plusMinutes(1));
         return sessao;

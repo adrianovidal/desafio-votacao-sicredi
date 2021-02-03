@@ -51,8 +51,9 @@ public class VotoServiceImpl implements VotoService {
     }
 
     private void validarVoto(Voto voto) {
+        voto.setId(null);
         Sessao sessao = voto.getSessao();
-        Voto votoConsultado = this.votoRepository.findByAssociadoIdenAndSessao_Sequencial(voto.getAssociadoIden(), sessao.getSequencial());
+        Voto votoConsultado = this.votoRepository.findByAssociadoIdenAndSessao_id(voto.getAssociadoIden(), sessao.getId());
         if (naoEstaNulo(votoConsultado)) {
             throw new NegocioException(O_ASSOCIADO_JA_REALIZOU_SEU_VOTO_NESTA_SESSAO);
         }

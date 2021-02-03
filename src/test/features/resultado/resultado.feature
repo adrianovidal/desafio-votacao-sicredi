@@ -1,5 +1,5 @@
 #language: pt
-@sessao_cadastro
+@resultado_consulta
 Funcionalidade: Enviar requisição obter o resultado de uma Assembleia.
 
     # A duração da assembleia deve ter um intervalor maior que a duração (min) convertida em segundos

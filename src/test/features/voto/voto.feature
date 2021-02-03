@@ -1,5 +1,5 @@
 #language: pt
-@sessao_cadastro
+@voto_cadastro
 Funcionalidade: Enviar o voto para registro na sessão.
 
     Cenario: 01 - Enviar o voto do associado em uma Assembleia

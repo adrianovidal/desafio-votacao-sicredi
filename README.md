@@ -49,7 +49,7 @@ não infrinja direitos de uso).
 - [Execução da API](http://localhost:9000)
 - [Console do Banco H2](http://localhost:9000/h2-console)
 - [Swagger](http://localhost:9000/swagger-ui.html)
-- [Repopsitório](https://github.com/adrianovidal/desafio-votacao-api.git)
+- [Repositório](https://github.com/adrianovidal/desafio-votacao-api.git)
 
 ## Modelos
 

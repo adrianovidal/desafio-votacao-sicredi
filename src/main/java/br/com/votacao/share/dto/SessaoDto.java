@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class SessaoDto {
 
-    @ApiModelProperty(notes = "sequencial", name="sequencial", hidden = true)
-    private Long sequencial;
+    @ApiModelProperty(notes = "sequencial", name="id", hidden = true)
+    private Long id;
 
     @ApiModelProperty(notes = "sequencial da pauta", name="pautaId", required=true)
     private Long pautaId;
@@ -13,12 +13,12 @@ public class SessaoDto {
     @ApiModelProperty(notes = "duração da sessão em minutos", name="duracao", required=true)
     private String duracao;
 
-    public Long getSequencial() {
-        return sequencial;
+    public Long getId() {
+        return id;
     }
 
-    public void setSequencial(Long sequencial) {
-        this.sequencial = sequencial;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getPautaId() {

@@ -15,7 +15,7 @@ public class Sessao {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long sequencial;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "idPauta")
@@ -26,12 +26,12 @@ public class Sessao {
     @Column(columnDefinition = "boolean default false")
     private boolean enviadoKafka;
 
-    public Long getSequencial() {
-        return sequencial;
+    public Long getId() {
+        return id;
     }
 
-    public void setSequencial(Long sequencial) {
-        this.sequencial = sequencial;
+    public void setId(Long sequencial) {
+        this.id = sequencial;
     }
 
     public Pauta getPauta() {
@@ -63,12 +63,12 @@ public class Sessao {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Sessao sessao = (Sessao) o;
-        return Objects.equals(sequencial, sessao.sequencial);
+        return Objects.equals(id, sessao.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sequencial);
+        return Objects.hash(id);
     }
 
     public ResultadoEnum obterTipoResultado() {

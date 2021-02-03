@@ -40,12 +40,12 @@ public class ResultadoDtoTest {
     @Test
     public void deveriaConverterSessaoDtoParaEntidadeSessao() {
         SessaoDto sessaoDto = new SessaoDto();
-        sessaoDto.setSequencial(1L);
+        sessaoDto.setId(1L);
         sessaoDto.setDuracao("2");
         sessaoDto.setPautaId(2L);
 
         Sessao sessao = modelMapper.map(sessaoDto, Sessao.class);
-        assertEquals(sessaoDto.getSequencial(), sessao.getSequencial());
+        assertEquals(sessaoDto.getId(), sessao.getId());
         assertEquals(obterDuracao(sessaoDto), Date.from(sessao.getDuracao().toInstant()).toString());
         assertEquals(sessaoDto.getPautaId(), sessao.getPauta().getId());
     }

@@ -14,7 +14,7 @@ public class VotoDtoTest {
     @Test
     public void deveriaConverterEntidadeVotoParaVotoDto() {
         Voto voto = new Voto();
-        voto.setSessao(new Sessao() {{ setSequencial(1L); }});
+        voto.setSessao(new Sessao() {{ setId(1L); }});
         voto.setVoto("Não");
         voto.setAssociadoIden(2L);
         voto.setAssociadoCpf("07568173070");
@@ -23,7 +23,7 @@ public class VotoDtoTest {
         assertEquals(voto.getVoto(), votoDto.getVoto());
         assertEquals(voto.getAssociadoCpf(), votoDto.getAssociadoCpf());
         assertEquals(voto.getAssociadoIden(), votoDto.getAssociadoIden());
-        assertEquals(voto.getSessao().getSequencial(), votoDto.getSessaoSequencial());
+        assertEquals(voto.getSessao().getId(), votoDto.getSessaoId());
     }
 
     @Test
@@ -32,12 +32,12 @@ public class VotoDtoTest {
         votoDto.setVoto("Sim");
         votoDto.setAssociadoCpf("07568173070");
         votoDto.setAssociadoIden(2L);
-        votoDto.setSessaoSequencial(2L);
+        votoDto.setSessaoId(2L);
 
         Voto voto = modelMapper.map(votoDto, Voto.class);
         assertEquals(votoDto.getAssociadoIden(), voto.getAssociadoIden());
         assertEquals(votoDto.getAssociadoCpf(), voto.getAssociadoCpf());
-        assertEquals(votoDto.getSessaoSequencial(), voto.getSessao().getSequencial());
+        assertEquals(votoDto.getSessaoId(), voto.getSessao().getId());
         assertEquals(votoDto.getVoto(), voto.getVoto());
     }
 }
