@@ -27,18 +27,18 @@ import org.junit.runners.Suite;
         SessaoControllerTest.class,
         VotoControllerTest.class,
 
-        ResultadoServiceImplTest.class,
-        SessaoServiceImplTest.class,
-        VerificarCpfAssociadoServiceImplTest.class,
-        VotoServiceImplTest.class,
+//        ResultadoServiceImplTest.class,
+//        SessaoServiceImplTest.class,
+//        VerificarCpfAssociadoServiceImplTest.class,
+//        VotoServiceImplTest.class,
 
-        DateStringConverterTest.class,
-        StringDateConverterTest.class,
+//        DateStringConverterTest.class,
+//        StringDateConverterTest.class,
 
-        PautaDtoTest.class,
-        ResultadoDtoTest.class,
-        SessaoDtoTest.class,
-        VotoDtoTest.class
+//        PautaDtoTest.class,
+//        ResultadoDtoTest.class,
+//        SessaoDtoTest.class,
+//        VotoDtoTest.class
 })
 public class FastUnitTests {
 

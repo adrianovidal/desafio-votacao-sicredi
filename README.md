@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/adrianovidal/desafio-votacao-sicredi.svg?branch=main)](https://travis-ci.org/adrianovidal/desafio-votacao-sicredi) [![codecov](https://codecov.io/gh/adrianovidal/desafio-votacao-sicredi/branch/main/graph/badge.svg?token=BYOJWGTKMR)](https://codecov.io/gh/adrianovidal/desafio-votacao-sicredi)
+
 # Desafio Técnico
 
 ## Objetivo: 

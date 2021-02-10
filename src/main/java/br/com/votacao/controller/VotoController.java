@@ -25,14 +25,18 @@ public class VotoController {
 		this.modelMapper = modelMapper;
 	}
 
-	@PostMapping(value = "/votar", produces="application/json")
-	public ResponseEntity<VotoResponse> save(@RequestBody VotoDto votoDto) {
+	@PostMapping(value = "/voto", produces="application/json")
+	public VotoDto save(@RequestBody VotoDto votoDto) {
 		Voto voto = convertToEntity(votoDto);
-		votoService.votar(voto);
-		return ResponseEntity.ok(votoCadastrado());
+		Voto votarCadastrado = votoService.votar(voto);
+		return convertToDto(votarCadastrado);
 	}
 
 	private Voto convertToEntity(VotoDto votoDto) {
 		return modelMapper.map(votoDto, Voto.class);
+	}
+
+	private VotoDto convertToDto(Voto voto) {
+		return modelMapper.map(voto, VotoDto.class);
 	}
 }

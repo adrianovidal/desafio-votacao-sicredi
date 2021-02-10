@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VotoService {
 
-    void votar(Voto voto);
+    Voto votar(Voto voto);
 
     List<Voto> consultarVotos(Sessao sessao);
 }

@@ -1,26 +1,46 @@
 package br.com.votacao.controller;
 
+import br.com.votacao.VotacaoApplication;
+import br.com.votacao.builder.PautaDtoBuilder;
 import br.com.votacao.domain.Pauta;
+import br.com.votacao.fixture.PautaFixture;
 import br.com.votacao.repository.PautaRepository;
 import br.com.votacao.share.dto.PautaDto;
-import br.com.votacao.unittest.UnitTest;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.jmock.Expectations;
-import org.jmock.auto.Mock;
-import org.junit.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class PautaControllerTest extends UnitTest {
+import static br.com.votacao.share.ConstantsTests.URI_API_PAUTA;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Matchers.eq;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    @Mock protected PautaRepository pautaRepositoryMock;
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = VotacaoApplication.class)
+@AutoConfigureMockMvc
+public class PautaControllerTest {
 
-    protected ModelMapper modelMapperMock = new ModelMapper();
+    @Autowired
+    protected MockMvc mvc;
 
-    protected PautaController pautaController;
+    @MockBean
+    private PautaRepository pautaRepositoryMock;
+
+    @MockBean
+    private ModelMapper modelMapperMock;
 
     private PautaDto pautaDto;
     private Pauta pauta;
@@ -28,59 +48,28 @@ public class PautaControllerTest extends UnitTest {
 
     @Before
     public void inicializarContexto() {
-        pautaController = new PautaController(pautaRepositoryMock, modelMapperMock);
-
         String licitacao = "Licitação";
-        pautaDto = new PautaDto();
-        pautaDto.setNome(licitacao);
-
-        pauta = new Pauta();
-        pauta.setNome(licitacao);
-
-        pautaRetornado = new Pauta();
-        pautaRetornado.setNome(licitacao);
+        pauta = PautaFixture.umaPauta();
+        pautaDto = PautaDtoBuilder.of()
+                .comNome(licitacao).build();
     }
 
     @Test
-    public void deveriaConverterDtoEmEntidade() {
-        contexto.checking(new Expectations(){{
-            oneOf(pautaRepositoryMock).save(with(matchesEntity(pauta)));
-            will(returnValue(pautaRetornado));
-        }});
+    public void aoCadastrarDeveriaRetornarAhPautaEsperada() throws Exception {
+        BDDMockito.given(modelMapperMock.map(any(PautaDto.class), eq(Pauta.class))).willReturn(pauta);
+        BDDMockito.given(pautaRepositoryMock.save(any(Pauta.class))).willReturn(pauta);
+        BDDMockito.given(modelMapperMock.map(any(Pauta.class), eq(PautaDto.class))).willReturn(pautaDto);
 
-        cadastrar();
+        ResultActions resultActions = cadastrarPauta();
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value(pautaDto.getNome()));
     }
 
-    @Test
-    public void deveriaRetornarPautaDto() {
-        permitirDeveriaSalvarPauta();
-
-        PautaDto pautaDtoRetornada = cadastrar();
-        Assert.assertEquals(pautaDto.getNome(), pautaDtoRetornada.getNome());
-    }
-
-    private PautaDto cadastrar() {
-        return pautaController.save(pautaDto);
-    }
-
-    void permitirDeveriaSalvarPauta() {
-        contexto.checking(new Expectations() {{
-            allowing(pautaRepositoryMock).save(with(any(Pauta.class)));
-            will(returnValue(pautaRetornado));
-        }});
-    }
-
-    public static Matcher<Pauta> matchesEntity(Pauta pauta) {
-        return new TypeSafeMatcher<Pauta>() {
-            @Override
-            public boolean matchesSafely(Pauta objectToTest) {
-                return objectToTest.getNome().equals(pauta.getNome());
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("nome inválido");
-            }
-        };
+    private ResultActions cadastrarPauta() throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.post(URI_API_PAUTA)
+                .content(new ObjectMapper().writeValueAsString(pautaDto))
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8));
     }
 }

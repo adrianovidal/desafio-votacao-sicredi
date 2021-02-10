@@ -1,98 +1,76 @@
 package br.com.votacao.controller;
 
+import br.com.votacao.VotacaoApplication;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.fixture.PautaFixture;
 import br.com.votacao.fixture.SessaoFixture;
 import br.com.votacao.service.SessaoService;
-import br.com.votacao.share.converter.DateStringConverter;
-import br.com.votacao.share.converter.StringDateConverter;
 import br.com.votacao.share.dto.SessaoDto;
-import br.com.votacao.unittest.UnitTest;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.jmock.Expectations;
-import org.jmock.auto.Mock;
-import org.junit.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static java.util.Date.from;
+import static br.com.votacao.builder.SessaoDtoBuilder.umaSessaoDto;
+import static br.com.votacao.share.ConstantsTests.URI_API_SESSAO;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SessaoControllerTest extends UnitTest {
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
+@SpringBootTest(classes = VotacaoApplication.class)
+public class SessaoControllerTest {
 
-    @Mock protected SessaoService sessaoServiceMock;
-    protected ModelMapper modelMapper;
+    @Autowired
+    protected MockMvc mvc;
 
-    protected SessaoController sessaoController;
+    @MockBean
+    protected SessaoService sessaoServiceMock;
+
+    @MockBean
+    protected ModelMapper modelMapperMock;
 
     protected SessaoDto sessaoDto;
     protected Sessao sessao;
-    protected Sessao sessaoConsultada;
 
     @Before
     public void inicializarContexto() {
-        modelMapper = new ModelMapper();
-        modelMapper.addConverter(new StringDateConverter());
-        modelMapper.addConverter(new DateStringConverter());
-
-        sessaoController = new SessaoController(sessaoServiceMock, modelMapper);
-
-        sessaoDto = new SessaoDto();
-        sessaoDto.setDuracao("1");
-        sessaoDto.setPautaId(1L);
-        sessaoDto.setId(1L);
+        sessaoDto = umaSessaoDto().build();
 
         sessao = SessaoFixture.umaSessao();
         sessao.setPauta(PautaFixture.umaPauta());
-
-        sessaoConsultada = new Sessao();
-        sessaoConsultada.setId(1L);
     }
 
     @Test
-    public void deveriaCadastrarSessao() {
-        contexto.checking(new Expectations(){{
-            oneOf(sessaoServiceMock).cadastrar(with(matchesEntity(sessao)));
-            will(returnValue(sessaoConsultada));
-        }});
+    public void aoCadastrarDeveriaRetornarAhSessaoEsperada() throws Exception {
+        BDDMockito.given(modelMapperMock.map(any(SessaoDto.class), eq(Sessao.class))).willReturn(sessao);
+        BDDMockito.given(sessaoServiceMock.cadastrar(any(Sessao.class))).willReturn(sessao);
+        BDDMockito.given(modelMapperMock.map(any(Sessao.class), eq(SessaoDto.class))).willReturn(sessaoDto);
 
-        cadastrar();
+        ResultActions resultActions = cadastrarSessao();
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pautaId").value(sessaoDto.getPautaId()))
+                .andExpect(jsonPath("$.duracao").value(sessaoDto.getDuracao()));
     }
 
-    @Test
-    public void deveriaRetornarAhSessao() {
-        permitirCadastrarSessao();
-
-        SessaoDto sessaoCadastradad = cadastrar();
-        Assert.assertEquals(sessao.getId(), sessaoCadastradad.getId());
-    }
-
-    private SessaoDto cadastrar() {
-        return sessaoController.save(sessaoDto);
-    }
-
-    void permitirCadastrarSessao() {
-        contexto.checking(new Expectations() {{
-            allowing(sessaoServiceMock).cadastrar(with(any(Sessao.class)));
-            will(returnValue(sessaoConsultada));
-        }});
-    }
-
-    public static Matcher<Sessao> matchesEntity(Sessao sessao) {
-        return new TypeSafeMatcher<Sessao>() {
-            @Override
-            public boolean matchesSafely(Sessao objectToTest) {
-                return from(objectToTest.getDuracao().toInstant()).toString().equals(from(sessao.getDuracao().toInstant()).toString())
-                        && objectToTest.getId().equals(sessao.getId())
-                        && objectToTest.getPauta().getId().equals(sessao.getPauta().getId());
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("matchesSafely");
-            }
-        };
+    private ResultActions cadastrarSessao() throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.post(URI_API_SESSAO)
+                .content(new ObjectMapper().writeValueAsString(sessaoDto))
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8));
     }
 }

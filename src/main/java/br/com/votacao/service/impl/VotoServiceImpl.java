@@ -32,13 +32,13 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public void votar(Voto voto) {
+    public Voto votar(Voto voto) {
         verificarAssociadoHapto(voto.getAssociadoCpf());
 
         this.sessaoService.validar(voto.getSessao());
         validarVoto(voto);
 
-        this.votoRepository.save(voto);
+        return this.votoRepository.save(voto);
     }
 
     @Override

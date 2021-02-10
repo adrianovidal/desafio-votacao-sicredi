@@ -1,32 +1,46 @@
 package br.com.votacao.controller;
 
+import br.com.votacao.VotacaoApplication;
+import br.com.votacao.builder.ResultadoDtoBuilder;
+import br.com.votacao.fixture.ResultadoFixture;
 import br.com.votacao.service.ResultadoService;
 import br.com.votacao.share.dto.ResultadoDto;
 import br.com.votacao.share.response.Resultado;
-import br.com.votacao.unittest.UnitTest;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.jmock.Expectations;
-import org.jmock.auto.Mock;
-import org.junit.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.mockito.BDDMockito;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ResultadoControllerTest extends UnitTest {
+import static br.com.votacao.share.ConstantsTests.URI_API_RESULTADO;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    @RunWith(Suite.class)
-    @SuiteClasses({ })
-    public static class AllTests { }
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = VotacaoApplication.class)
+@AutoConfigureMockMvc
+public class ResultadoControllerTest {
 
-    @Mock protected ResultadoService resultadoServiceMock;
-    protected ModelMapper modelMapper;
+    @Autowired
+    protected MockMvc mvc;
 
-    protected ResultadoController resultadoController;
+    @MockBean
+    private ResultadoService resultadoServiceMock;
+
+    @MockBean
+    private ModelMapper modelMapperMock;
 
     protected ResultadoDto resultadoDto;
     protected Resultado resultado;
@@ -34,62 +48,30 @@ public class ResultadoControllerTest extends UnitTest {
 
     @Before
     public void inicializarContexto() {
-        modelMapper = new ModelMapper();
-        resultadoController = new ResultadoController(resultadoServiceMock, modelMapper);
+        resultadoDto = ResultadoDtoBuilder.umaVotoDto().build();
 
-        resultadoDto = new ResultadoDto();
-        resultadoDto.setIdPauta(1L);
-        resultadoDto.setIdSessao(2L);
-
-        resultado = new Resultado();
-        resultado.setIdPauta(1L);
-        resultado.setIdSessao(2L);
-
-        resultadoConsultado = new Resultado();
-        resultadoConsultado.setTotalVotos(1);
+        resultado = ResultadoFixture.umResultadoFinal();
     }
 
     @Test
-    public void deveriaObterOhResultado() {
-        contexto.checking(new Expectations(){{
-            oneOf(resultadoServiceMock).resultado(with(matchesEntity(resultado)));
-            will(returnValue(resultadoConsultado));
-        }});
+    public void aoConsultarDeveriaRetornarOhResultaddoEsperada() throws Exception {
+        BDDMockito.given(modelMapperMock.map(any(ResultadoDto.class), eq(Resultado.class))).willReturn(resultado);
+        BDDMockito.given(resultadoServiceMock.resultado(any(Resultado.class))).willReturn(resultado);
+        BDDMockito.given(modelMapperMock.map(any(Resultado.class), eq(ResultadoDto.class))).willReturn(resultadoDto);
 
-        cadastrar();
+        ResultActions resultActions = consultarResultado();
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.votosSim").value(resultadoDto.getVotosSim()))
+                .andExpect(jsonPath("$.votosNao").value(resultadoDto.getVotosNao()))
+                .andExpect(jsonPath("$.totalVotos").value(resultadoDto.getTotalVotos()))
+                .andExpect(jsonPath("$.resultado").value(resultadoDto.getResultado()));
     }
 
-    @Test
-    public void deveriaRetornarOhResultaddoConsultado() {
-        permitirConsultarResultado();
-
-        ResultadoDto resultadoRetornado = cadastrar();
-        Assert.assertEquals(resultadoConsultado.getTotalVotos(), resultadoRetornado.getTotalVotos());
-    }
-
-    private ResultadoDto cadastrar() {
-        return resultadoController.save(resultadoDto);
-    }
-
-    void permitirConsultarResultado() {
-        contexto.checking(new Expectations() {{
-            allowing(resultadoServiceMock).resultado(with(any(Resultado.class)));
-            will(returnValue(resultadoConsultado));
-        }});
-    }
-
-    public static Matcher<Resultado> matchesEntity(Resultado resultado) {
-        return new TypeSafeMatcher<Resultado>() {
-            @Override
-            public boolean matchesSafely(Resultado objectToTest) {
-                return objectToTest.getIdPauta().equals(resultado.getIdPauta())
-                        && objectToTest.getIdSessao().equals(resultado.getIdSessao());
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("nome inválido");
-            }
-        };
+    private ResultActions consultarResultado() throws Exception {
+        return mvc.perform(MockMvcRequestBuilders.post(URI_API_RESULTADO)
+                .content(new ObjectMapper().writeValueAsString(resultadoDto))
+                .contentType(APPLICATION_JSON_UTF8)
+                .accept(APPLICATION_JSON_UTF8));
     }
 }

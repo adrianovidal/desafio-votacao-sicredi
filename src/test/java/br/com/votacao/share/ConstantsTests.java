@@ -13,4 +13,12 @@ public interface ConstantsTests {
 
     ObjectMapper MAPPER = new ObjectMapper().registerModule(new JavaTimeModule()).enable(ACCEPT_SINGLE_VALUE_AS_ARRAY);
     TypeFactory TYPE_FACTORY = MAPPER.getTypeFactory();
+
+    String URI_API_PAUTA = "/api/pauta";
+    String URI_API_SESSAO = "/api/sessao";
+    String URI_API_VOTO = "/api/voto";
+    String URI_API_RESULTADO = "/api/resultado";
+
+
+    String LICITACAO = "Licitação";
 }
