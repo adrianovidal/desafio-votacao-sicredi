@@ -35,7 +35,7 @@ public class VotoServiceImpl implements VotoService {
     public Voto votar(Voto voto) {
         verificarAssociadoHapto(voto.getAssociadoCpf());
 
-        this.sessaoService.validar(voto.getSessao());
+//        this.sessaoService.validar(voto.getSessao());
         validarVoto(voto);
 
         return this.votoRepository.save(voto);

@@ -37,7 +37,7 @@ public class ResultadoServiceSchedule {
 
     @Scheduled(cron = "${resultado.repeatInterval}")
     public void veriricarSessosFinalizadasSemResultadoEnviado() {
-        List<Sessao> sessoesNaoEnviadas = sessaoService.consultarSessoesFinalizadasSemResultadoEnviaddo();
+        List<Sessao> sessoesNaoEnviadas = sessaoService.consultarSessoesFinalizadasSemResultadoEnviado();
         sessoesNaoEnviadas.forEach(sessao -> {
             Resultado resultado = resultadoService.resultado(criarResultadoParaConsulta(sessao));
             kafkaProducer.writeMessage(toJson(resultado));
