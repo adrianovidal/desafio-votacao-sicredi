@@ -3,9 +3,9 @@ package br.com.votacao.service.impl;
 import br.com.votacao.controller.errors.NegocioException;
 import br.com.votacao.domain.Pauta;
 import br.com.votacao.domain.Sessao;
-import br.com.votacao.repository.PautaRepository;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
+import br.com.votacao.service.validator.ValidadorSessao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +20,11 @@ import static java.time.ZonedDateTime.now;
 public class SessaoServiceImpl implements SessaoService {
 
     private final SessaoRepository sessaoRepository;
-    private final PautaRepository pautaRepository;
+    private final ValidadorSessao validadorSessao;
 
-    public SessaoServiceImpl(SessaoRepository sessaoRepository, PautaRepository pautaRepository) {
+    public SessaoServiceImpl(SessaoRepository sessaoRepository, ValidadorSessao validadorSessao1) {
         this.sessaoRepository = sessaoRepository;
-        this.pautaRepository = pautaRepository;
+        this.validadorSessao = validadorSessao1;
     }
 
     @Override
@@ -41,9 +41,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Override
     public Sessao cadastrar(Sessao sessao) {
-        Pauta pauta = sessao.getPauta();
-        Optional<Pauta> paulta = this.pautaRepository.findById(pauta.getId());
-        validarPauta(paulta.orElse(null));
+        validadorSessao.validar(sessao);
         return this.sessaoRepository.save(sessao);
     }
 
