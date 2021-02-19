@@ -3,12 +3,13 @@ package br.com.votacao.repository;
 import br.com.votacao.domain.Sessao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@Repository
 public interface SessaoRepository extends JpaRepository<Sessao, Long> {
 
     Sessao findByIdAndPauta_Id(Long sequencial, Long pautaId);

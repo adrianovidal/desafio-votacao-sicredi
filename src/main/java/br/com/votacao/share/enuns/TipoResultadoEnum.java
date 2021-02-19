@@ -1,13 +1,13 @@
 package br.com.votacao.share.enuns;
 
-public enum ResultadoEnum {
+public enum TipoResultadoEnum {
 
     PARCIAL("Parcial"),
     FINAL("Final");
 
     private String descricao;
 
-    ResultadoEnum(String descricao) {
+    TipoResultadoEnum(String descricao) {
         this.descricao = descricao;
     }
 

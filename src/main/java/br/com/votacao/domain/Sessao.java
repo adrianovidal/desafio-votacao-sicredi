@@ -1,13 +1,13 @@
 package br.com.votacao.domain;
 
-import br.com.votacao.share.enuns.ResultadoEnum;
+import br.com.votacao.share.enuns.TipoResultadoEnum;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
-import static br.com.votacao.share.enuns.ResultadoEnum.FINAL;
-import static br.com.votacao.share.enuns.ResultadoEnum.PARCIAL;
+import static br.com.votacao.share.enuns.TipoResultadoEnum.FINAL;
+import static br.com.votacao.share.enuns.TipoResultadoEnum.PARCIAL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "SESSAO")
@@ -71,7 +71,7 @@ public class Sessao {
         return Objects.hash(id);
     }
 
-    public ResultadoEnum obterTipoResultado() {
+    public TipoResultadoEnum obterTipoResultado() {
         return ZonedDateTime.now().isBefore(duracao) ?  PARCIAL : FINAL;
     }
 }

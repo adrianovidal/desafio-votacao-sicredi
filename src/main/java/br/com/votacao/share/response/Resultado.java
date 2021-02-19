@@ -1,6 +1,6 @@
 package br.com.votacao.share.response;
 
-import br.com.votacao.share.enuns.ResultadoEnum;
+import br.com.votacao.share.enuns.TipoResultadoEnum;
 
 public class Resultado {
 
@@ -9,7 +9,7 @@ public class Resultado {
     private Integer totalVotos;
     private Integer votosSim;
     private Integer votosNao;
-    private ResultadoEnum resultado;
+    private TipoResultadoEnum tipoResultado;
 
     public Long getIdPauta() {
         return idPauta;
@@ -51,11 +51,11 @@ public class Resultado {
         this.votosNao = votosNao;
     }
 
-    public ResultadoEnum getResultado() {
-        return resultado;
+    public TipoResultadoEnum getTipoResultado() {
+        return tipoResultado;
     }
 
-    public void setResultado(ResultadoEnum resultado) {
-        this.resultado = resultado;
+    public void setTipoResultado(TipoResultadoEnum tipoResultado) {
+        this.tipoResultado = tipoResultado;
     }
 }

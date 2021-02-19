@@ -3,7 +3,7 @@ package br.com.votacao.share.dto;
 import br.com.votacao.domain.Sessao;
 import br.com.votacao.share.converter.DateStringConverter;
 import br.com.votacao.share.converter.StringDateConverter;
-import br.com.votacao.share.enuns.ResultadoEnum;
+import br.com.votacao.share.enuns.TipoResultadoEnum;
 import br.com.votacao.share.response.Resultado;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -26,7 +26,7 @@ public class ResultadoDtoTest {
         resultado.setTotalVotos(10);
         resultado.setVotosNao(3);
         resultado.setVotosSim(7);
-        resultado.setResultado(ResultadoEnum.FINAL);
+        resultado.setTipoResultado(TipoResultadoEnum.FINAL);
 
         ResultadoDto resultadoDto = modelMapper.map(resultado, ResultadoDto.class);
         assertEquals(resultado.getIdPauta(), resultadoDto.getIdPauta());
@@ -34,7 +34,7 @@ public class ResultadoDtoTest {
         assertEquals(resultado.getVotosNao(), resultadoDto.getVotosNao());
         assertEquals(resultado.getVotosSim(), resultadoDto.getVotosSim());
         assertEquals(resultado.getTotalVotos(), resultadoDto.getTotalVotos());
-        assertEquals(resultado.getResultado(), resultadoDto.getResultado());
+        assertEquals(resultado.getTipoResultado(), resultadoDto.getResultado());
     }
 
     @Test

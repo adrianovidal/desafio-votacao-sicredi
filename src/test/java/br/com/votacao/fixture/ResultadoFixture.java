@@ -2,6 +2,8 @@ package br.com.votacao.fixture;
 
 import br.com.votacao.share.response.Resultado;
 
+import static br.com.votacao.share.enuns.TipoResultadoEnum.PARCIAL;
+
 public class ResultadoFixture {
 
     public static Resultado umResultado() {
@@ -11,11 +13,12 @@ public class ResultadoFixture {
         return resultado;
     }
 
-    public static Resultado umResultadoFinal() {
+    public static Resultado umResultadoParcial() {
         Resultado resultado = umResultado();
         resultado.setVotosSim(3);
         resultado.setVotosNao(2);
         resultado.setTotalVotos(5);
+        resultado.setTipoResultado(PARCIAL);
         return resultado;
     }
 }

@@ -1,6 +1,6 @@
 package br.com.votacao.share.dto;
 
-import br.com.votacao.share.enuns.ResultadoEnum;
+import br.com.votacao.share.enuns.TipoResultadoEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 public class ResultadoDto {
@@ -21,7 +21,7 @@ public class ResultadoDto {
     private Integer totalVotos;
 
     @ApiModelProperty(readOnly = true)
-    private ResultadoEnum resultado;
+    private TipoResultadoEnum resultado;
 
     public Long getIdPauta() {
         return idPauta;
@@ -63,11 +63,11 @@ public class ResultadoDto {
         this.totalVotos = totalVotos;
     }
 
-    public ResultadoEnum getResultado() {
+    public TipoResultadoEnum getResultado() {
         return resultado;
     }
 
-    public void setResultado(ResultadoEnum resultado) {
+    public void setResultado(TipoResultadoEnum resultado) {
         this.resultado = resultado;
     }
 }

@@ -1,7 +1,7 @@
 package br.com.votacao.share.builders;
 
 import br.com.votacao.share.response.Resultado;
-import br.com.votacao.share.enuns.ResultadoEnum;
+import br.com.votacao.share.enuns.TipoResultadoEnum;
 
 public class ResultadoBuild {
 
@@ -40,8 +40,8 @@ public class ResultadoBuild {
         return this;
     }
 
-    public ResultadoBuild comResultado(ResultadoEnum resultadoEnum) {
-        this.resultado.setResultado(resultadoEnum);
+    public ResultadoBuild comResultado(TipoResultadoEnum tipoResultadoEnum) {
+        this.resultado.setTipoResultado(tipoResultadoEnum);
         return this;
     }
 

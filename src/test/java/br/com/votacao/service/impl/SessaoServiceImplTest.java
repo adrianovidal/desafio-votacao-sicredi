@@ -7,7 +7,6 @@ import br.com.votacao.repository.PautaRepository;
 import br.com.votacao.repository.SessaoRepository;
 import br.com.votacao.service.SessaoService;
 import br.com.votacao.service.validator.ValidadorSessao;
-import br.com.votacao.unittest.UnitTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,16 +24,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SessaoServiceImplTest extends UnitTest {
+public class SessaoServiceImplTest {
 
-    @Mock
-    protected SessaoRepository sessaoRepositoryMock;
-
-    @Mock
-    protected PautaRepository pautaRepositoryMock;
-
-    @Mock
-    protected ValidadorSessao validadorSessaoMock;
+    @Mock protected SessaoRepository sessaoRepositoryMock;
+    @Mock protected PautaRepository pautaRepositoryMock;
+    @Mock protected ValidadorSessao validadorSessaoMock;
 
     protected SessaoService sessaoService;
 

@@ -4,5 +4,5 @@ import br.com.votacao.share.response.Resultado;
 
 public interface ResultadoService {
 
-    Resultado resultado(Resultado resultadoDto);
+    Resultado resultado(Resultado resultado);
 }

@@ -50,7 +50,7 @@ public class ResultadoControllerTest {
     public void inicializarContexto() {
         resultadoDto = ResultadoDtoBuilder.umaVotoDto().build();
 
-        resultado = ResultadoFixture.umResultadoFinal();
+        resultado = ResultadoFixture.umResultadoParcial();
     }
 
     @Test
