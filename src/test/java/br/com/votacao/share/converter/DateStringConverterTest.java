@@ -1,13 +1,12 @@
 package br.com.votacao.share.converter;
 
-import br.com.votacao.unittest.UnitTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.ZonedDateTime;
 
-public class DateStringConverterTest extends UnitTest {
+public class DateStringConverterTest {
 
     protected DateStringConverter dateStringConverter;
 

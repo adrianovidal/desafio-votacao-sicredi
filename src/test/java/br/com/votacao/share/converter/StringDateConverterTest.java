@@ -1,6 +1,5 @@
 package br.com.votacao.share.converter;
 
-import br.com.votacao.unittest.UnitTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import static java.lang.Long.parseLong;
 import static java.time.ZonedDateTime.now;
 import static java.util.Date.from;
 
-public class StringDateConverterTest extends UnitTest {
+public class StringDateConverterTest {
 
     protected StringDateConverter stringDateConverter;
 

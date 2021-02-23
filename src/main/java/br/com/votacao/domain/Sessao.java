@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import static br.com.votacao.share.enuns.TipoResultadoEnum.FINAL;
 import static br.com.votacao.share.enuns.TipoResultadoEnum.PARCIAL;
+import static java.time.ZonedDateTime.now;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "SESSAO")
@@ -72,6 +73,14 @@ public class Sessao {
     }
 
     public TipoResultadoEnum obterTipoResultado() {
-        return ZonedDateTime.now().isBefore(duracao) ?  PARCIAL : FINAL;
+        return now().isBefore(duracao) ?  PARCIAL : FINAL;
+    }
+
+    public Long obterIdPauta() {
+        return getPauta().getId();
+    }
+
+    public boolean estaEncerrada() {
+        return duracao.isBefore(now());
     }
 }

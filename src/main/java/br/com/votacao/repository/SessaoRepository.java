@@ -15,5 +15,5 @@ public interface SessaoRepository extends JpaRepository<Sessao, Long> {
     Sessao findByIdAndPauta_Id(Long sequencial, Long pautaId);
 
     @Query("SELECT s FROM SESSAO s WHERE s.duracao < :duracao AND s.enviadoKafka = false")
-    List<Sessao> consultarSessoesFinalizadasSemResultado(@Param("duracao")ZonedDateTime duracao);
+    List<Sessao> consultarSessoesFinalizadasSemResultado(@Param("duracao") ZonedDateTime duracao);
 }

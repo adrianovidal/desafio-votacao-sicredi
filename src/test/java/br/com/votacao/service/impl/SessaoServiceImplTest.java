@@ -12,12 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.ZonedDateTime.now;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.verify;
@@ -75,7 +76,7 @@ public class SessaoServiceImplTest {
 
     @Test
     public void deveriaConsultarSessoesEnceradasNaoEnviadasPeloKafka() {
-        when(sessaoRepositoryMock.consultarSessoesFinalizadasSemResultado(now())).thenReturn(sessoesEsperadas);
+        when(sessaoRepositoryMock.consultarSessoesFinalizadasSemResultado(Mockito.any(ZonedDateTime.class))).thenReturn(sessoesEsperadas);
 
         List<Sessao> sessoesRetornadas = sessaoService.consultarSessoesFinalizadasSemResultadoEnviado();
 
